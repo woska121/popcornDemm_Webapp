@@ -1,63 +1,56 @@
 <% include ../header.ejs %>
-				
-<section id="mypage">
-    <div class="container">
-    <% include ./sidebar.ejs %>
-    <div class="col-sm-10">
-        <table class="table table-bordered table-hover">
-            <h3><p class="text-center"><%= language.adminView.adminView%></p></h3><br>
-            <tr>
-                <th><input type="checkbox" id="checkAll"></th>
-                <th><%= language.adminView.class%></th>
-                <th><%= language.adminView.id_table%></th>
-                <th><%= language.adminView.nickName_table%></th>
-                <th><%= language.adminView.joinDate_table%></th>
-                <th><%= language.adminView.canclePower%></th>
-            </tr>            
-            <% user.forEach(function(user) { %>                 
-                <tr>           
-                    <td><input type="checkbox" name="mcheck" value="<%=user.userid%>"></td>
-                    <% if(user.authority == 1) {%>
-                        <td><%= language.adminView.admin_1%></td>
-                    <%} else {%>
-                        <td><%= language.adminView.admin_2%></td>
-                    <%}%>
-                    <td><%=user.userid%></td>
-                    <td><%=user.displayname%></td>
-                    <td> 
-                        <%=user.getDate.year%> -
-                        <%=user.getDate.month%> - 
-                        <%=user.getDate.day%>
-                    </td>
-                    <td>
-                        <button class="btn btn-danger" onclick="cancelAdminAuth('<%=user.userid%>')"><%= language.adminView.cancleAdmin%></button>
-                    </td>               
-                </tr>            
-            <%})%>
-        </table>
-                
-        <div class="paging">
-            <%if(curSet > 1){%> 
-                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true" onclick="location.href='/admin/adminCheck?page=<%=startPage-1%>'"></span>
-            <%}%>            
-            <%for(var i = startPage; i <= endPage; i++){%>
-                <%if(i > totalPage) {%>                  
-                <%} else {%> 
-                <a href="/admin/adminCheck?page=<%=i%>"><%=i%></a>
+<% include ./sidebar.ejs %>
+<div class="col-sm-10">
+    <table class="table table-bordered table-hover">
+        <h3><p class="text-center"><%= language.adminView.adminView%></p></h3><br>
+        <tr>
+            <th><input type="checkbox" id="checkAll"></th>
+            <th>분류</th>
+            <th><%= language.adminView.id_table%></th>
+            <th><%= language.adminView.nickName_table%></th>
+            <th><%= language.adminView.joinDate_table%></th>
+            <th><%= language.adminView.canclePower%></th>
+        </tr>            
+        <% user.forEach(function(user) { %>                 
+            <tr>           
+                <td><input type="checkbox" name="mcheck" value="<%=user.userid%>"></td>
+                <% if(user.authority == 1) {%>
+                    <td>제 1관리자</td>
+                <%} else {%>
+                    <td>제 2관리자</td>
                 <%}%>
-            <%}%>            
-            <%if(curSet < totalSet){%>
-                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true" onclick="location.href='/admin/adminCheck?page=<%=endPage+1%>'"></span>
-            <%}%>  
-        </div>    
-    </div>
-    </div>
-</section>
+                <td><%=user.userid%></td>
+                <td><%=user.displayname%></td>
+                <td> 
+                    <%=user.getDate.year%> -
+                    <%=user.getDate.month%> - 
+                    <%=user.getDate.day%>
+                </td>
+                <td>
+                    <button class="btn btn-danger" onclick="cancelAdminAuth('<%=user.userid%>')">관리자권한해제</button>
+                </td>               
+            </tr>            
+        <%})%>
+    </table>
+        
+    <div class="paging">
+        <%if(curSet > 1){%> 
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true" onclick="location.href='/admin/adminCheck?page=<%=startPage-1%>'"></span>
+        <%}%>            
+        <%for(var i = startPage; i <= endPage; i++){%>
+            <%if(i > totalPage) {%>                  
+            <%} else {%> 
+            <a href="/admin/adminCheck?page=<%=i%>"><%=i%></a>
+            <%}%>
+        <%}%>            
+        <%if(curSet < totalSet){%>
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true" onclick="location.href='/admin/adminCheck?page=<%=endPage+1%>'"></span>
+        <%}%>  
+    </div>    
+        
 
-
-
-
-
+</div>
+    
 <script type="text/javascript">    
 $(document).ready(function() {
     $("#checkAll").click(function() {
@@ -70,13 +63,13 @@ $(document).ready(function() {
 });
 
 function cancelAdminAuth(userid) {
-    if(confirm(userid + "<%= language.adminView.askCancle%>")==true){
+    if(confirm(userid + " 회원의 관리자 권한을 취소하시겠습니까?")==true){
         $.ajax({
             url : '/admin/cancelAdminAuth/'+userid,
             type : 'POST'
         })
         .success(function(args) {                       
-            alert("<%= language.adminView.successAdmin%>");
+            alert("권한이 취소되었습니다");
             document.location.href ='/admin/adminCheck';         
         })
         .fail(function(args) {

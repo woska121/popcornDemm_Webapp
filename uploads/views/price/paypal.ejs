@@ -1,0 +1,248 @@
+<% include ../header.ejs %>
+
+<div class="container">
+    <h2>플랜 결제</h2>
+    
+    <span>01 가격정책</span>&nbsp;>&nbsp;
+    <span style="color:blue;">02 결제&nbsp;>&nbsp;</span>
+    <span>03 결제완료</span>
+    
+    <hr/><br/>
+
+    <!-- 구매정보 table -->
+    <h4><b>구매 정보</b></h4>
+    <table class="table table-striped">
+        <thead style="background-color:#eff1f6; color:#666666;">
+        <tr>
+            <th>플랜명</th>
+            <th>Options</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>사이버머니 결제</td>
+            <td>
+                <%=cybermoney.optradio%>$ 
+                <br/>
+            </td>
+        </tr>
+        </tbody>
+    </table><br/>
+
+    <!-- 결제금액 table -->
+    <h4><b>결제금액</b></h4>
+    <table class="table table-striped" style="text-align:center;">
+        <thead style="background-color:#eff1f6; color:#666666;">
+        <tr>
+            <th style="align=right;">총 결제금액</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><h3><%=cybermoney.optradio%>$ </h3></td>
+        </tr>
+        </tbody>
+    </table><br/>
+
+
+    <!-- 결제수단 table -->
+    <h4><b>결제수단</b></h4>
+    <table class="table table-striped" style="text-align:center;">
+        <tbody>
+        <tr>
+            <td><img src="https://www.paypalobjects.com/webstatic/mktg/Logo/AM_mc_vs_ms_ae_UK.png"/><br/><br/>
+            현재 PAYPAL를 통한 카드결제만 가능합니다. (휴대폰 결제, 계좌이체 불가)<br/>
+            <span style="color:grey;">*추후 다른 결제 수단도 추가 예정입니다.</span>
+            </td>
+        </tr>
+        </tbody>
+    </table><br/>
+
+    <!-- 결제정보 table -->
+    <h4><b>결제 정보</b></h4>
+    <table class="table table-striped">
+        <tbody>
+        <tr>
+            <td>
+                <ul class="guide_auto">
+                    <li>자동 결제의 경우 매달 결제일은 첫 결제한 일(10월 20일에 결제하였을 경우 매달 20일)에 진행됩니다.</li>
+                    <li>결제가 진행되는 달에 없는 날(예를 들어, 31일이 결제 날인데 2월에 자동 결제가 진행되는 경우)은 매달 말일에 자동 결제가 진행됩니다.</li>
+                    <li><b>자동 결제의 경우 환불 및 플랜 변경이 불가능</b>하며, 자동 결제 해지 예약을 하면 다음 결제일부터 결제가 진행되지 않습니다. 
+                        자동 결제 해지 후 이용 기간이 만료되면 다른 플랜을 이용할 수 있습니다.</li>
+                </ul>
+            </td>
+        </tr>
+        </tbody>
+    </table><br/><br/>
+
+    <!--구매자 정보-->
+    <h4><b>구매자 정보</b></h4>
+    <form action="" id="orderForm">
+        <table class="table table-bordered table-hover" style="max-width:100%; margin:0 auto;">
+            <tbody>
+                <tr>
+                    <th>구매자메일</th>
+                    <td>
+                        <input value ="<%=cybermoney.userid%>" type="text" name="buyer_email" class="form-control" readonly/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>구매자이름</th>
+                    <td>
+                        <input value ="김재남" type="text" name="buyer_name" class="form-control" placeholder="김재남" />
+                    </td>
+                </tr>
+                <tr>
+                    <th>핸드폰번호</th>
+                    <td>
+                        <input value ="123-123-123" type="text" name="buyer_tel" class="form-control"  placeholder="010-0000-0000" />
+                    </td>
+                </tr>
+                <tr>
+                    <th>주소</th>
+                    <td>
+                        <input value ="경기도 오산시원동"  type="text" name="buyer_addr" class="form-control" readonly />
+                    </td>
+                </tr>
+                <tr>
+                    <th>상세주소</th>
+                    <td>
+                        <input value ="테스트마을입니당당" type="text" name="detail_addr" class="form-control" />
+                    </td>
+                </tr>
+                <tr>
+                    <th>우편번호</th>
+                    <td>
+                        <input value ="123123" type="text" name="buyer_postcode" class="form-control" placeholder="000-000" readonly/>
+                        <span style="margin-top:10px" class="btn btn-primary" onclick="setDaumPostcode()">우편번호 찾기</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table> <br/><br/>
+
+        <!-- 결제동의 checkbox -->
+        <div style="text-align:center;">
+            <label>
+                <input type="checkbox" id="check_agree"/>
+                "본인은 위의 내용을 모두 읽어보았으며 이에 전체 동의합니다."
+            </label>
+        </div><br/>
+        <div class="row" style="padding:15px; text-align:center; background-color:#ebeef3;">
+            특별한 환불사유/문의가 있을경우 <span style="color:#337ab7">contact@popcornsar.com</span>로 문의해주세요.
+        </div><br/><br/><br/>
+        <div style="text-align:center;">
+            <button style="margin-right:20px;" type="button" class="btn btn-default btn-lg" onclick="location.href='/pay/pricelist'">취소하기</button>
+            <button type="submit" class="btn btn-primary btn-lg">결제하기</button>
+            <!--<input type="button" class="btn btn-primary btn-lg" id="payresultBt" name="payresultBt" value="전송" />-->
+        </div>
+        <br/><br/>
+    </form>
+
+    
+<script type="text/javascript" src="https://service.iamport.kr/js/iamport.payment-1.1.2.js"></script>
+<!-- 지도 api 관련 -->
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+
+<script>
+    $(document).ready(function(){
+
+        // 결제하기 버튼 클릭
+        $('#orderForm').submit(function(){
+            var amount = <%=cybermoney.optradio%>;
+            var buyer_email = $('input[name=buyer_email]').val();
+            var buyer_name = $('input[name=buyer_name]').val();
+            var buyer_tel = $('input[name=buyer_tel]').val();
+            var buyer_addr = $('input[name=buyer_addr]').val() + ' / ' + $('input[name=detail_addr]').val();
+            var buyer_postcode = $('input[name=buyer_postcode]').val();
+            var merchant_uid = 'merchant_' + new Date().getTime();
+
+            // ★serializeArray 사용법.
+            var form_data = $(this).serializeArray();
+            form_data.push( 
+                {"name":"amount","value":amount},
+                {"name":"userid","value":"<%=cybermoney.userid%>"},
+                {"name":"merchant_uid","value":merchant_uid});
+
+            var check_agree = $("#check_agree").is(":checked");
+
+            if(check_agree){
+
+                $.ajax({
+                    url : "/pay/savepay_ajax",
+                    type: "POST",
+                    data : form_data
+                });
+                
+                var IMP = window.IMP; 
+                IMP.init('imp68638200'); //가맹점 식별코드 삽입 
+                IMP.request_pay({
+                    pg : 'paypal',
+                    pay_method : 'card',
+                    merchant_uid : merchant_uid, //가맹점에서 관리하는 고유 승인번호 
+                    name : '수업:결제테스트',
+                    amount : amount,
+                    currency : 'USD',
+                    buyer_email: buyer_email,
+                    buyer_name : buyer_name,
+                    buyer_tel : buyer_tel,
+                    buyer_addr : buyer_addr,
+                    buyer_postcode : buyer_postcode,
+                    // paypal은 결제완료 후 이동될 페이지 주소를 지정하는 용도로 반드시 m_redirect_url이 있어야한다.
+                    // GET방식
+                    // query string이 추가되어 전달됩니다.
+                    // ###결제 성공
+                    // https://www.yourservice.com/payment/complete?imp_uid={아임포트거래고유번호}&merchant_uid={상점거래고유번호}
+                    // 결제 실패
+                    // https://www.yourservice.com/payment/complete?imp_uid={아임포트거래고유번호}&merchant_uid={상점거래고유번호}&error_msg={실패사유}
+                    m_redirect_url : 'http://localhost:3000/pay/trycomplete'  
+                });
+                return false;
+            }else{
+                alert('동의후 결제를 해주세요');
+            }
+        });
+    });
+    function setDaumPostcode() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                var fullAddr = ''; // 최종 주소 변수
+                var extraAddr = ''; // 조합형 주소 변수
+
+                // 사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                    fullAddr = data.roadAddress;
+
+                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                    fullAddr = data.jibunAddress;
+                }
+
+                // 사용자가 선택한 주소가 도로명 타입일때 조합한다.
+                if(data.userSelectedType === 'R'){
+                    //법정동명이 있을 경우 추가한다.
+                    if(data.bname !== ''){
+                        extraAddr += data.bname;
+                    }
+                    // 건물명이 있을 경우 추가한다.
+                    if(data.buildingName !== ''){
+                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+                    // 조합형주소의 유무에 따라 양쪽에 괄호를 추가하여 최종 주소를 만든다.
+                    fullAddr += (extraAddr !== '' ? ' ('+ extraAddr +')' : '');
+                }
+
+                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                $('input[name=buyer_postcode]').val(data.zonecode);
+                $('input[name=buyer_addr]').val(fullAddr);
+                
+                // 커서를 상세주소 필드로 이동한다.
+                $('input[name=detail_addr]').focus();
+            }
+        }).open();
+    }
+</script>
+
+<% include ../footer.ejs %>

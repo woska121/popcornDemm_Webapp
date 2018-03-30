@@ -1,0 +1,224 @@
+<% include ../header.ejs %>
+<% include ./sidebar.ejs %>
+<div class="col-sm-10">
+    <table class="table table-bordered table-hover">
+        <h3><p class="text-center">관리자 조회</p></h3><br>
+        <tr>
+            <th><input type="checkbox" id="checkAll"></th>
+            <th>소속</th>
+            <th>아이디</th>
+            <th>닉네임</th>
+            <th>회원가입일</th>
+            <th>권한 해제</th>
+        </tr>            
+        <% user.forEach(function(user) { %>                 
+            <tr>           
+                <td><input type="checkbox" name="mcheck" value="<%=user.userid%>"></td>
+                <td><%=user.company_name%></td>
+                <td><%=user.userid%></td>
+                <td><%=user.displayname%></td>
+                <td> 
+                    <%=user.getDate.year%> -
+                    <%=user.getDate.month%> - 
+                    <%=user.getDate.day%>
+                </td>
+                <% if(user.email_verification_state == true) {%>
+                    <td>인증</td>
+                <%} else {%>
+                    <td>미인증</td>
+                <%}%>
+                <td></td>
+                <% if(user.ide_authority == true) {%>
+                    <td>사용가능</td>
+                <%} else {%>
+                    <td>불가</td>
+                <%}%>
+                <td><button class="btn btn-primary" onclick="ideAuthorizeMember('<%=user.userid%>')">IDE권한부여</button>
+                <br><br>
+                <button class="btn btn-danger" onclick="cancelIdeAuthorizeMember('<%=user.userid%>')">IDE권한취소</button>
+                </td>
+                <!--<td><button class="btn btn-danger" onclick="forcedWithdrawMember('<%=user.userid%>')">강제탈퇴</button></td>!-->
+            </tr>            
+        <%})%>
+    </table>
+        
+    <div class="paging">
+        <%if(curSet > 1){%> 
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true" onclick="location.href='/admin/adminCheck?page=<%=startPage-1%>'"></span>
+        <%}%>            
+        <%for(var i = startPage; i <= endPage; i++){%>
+            <%if(i > totalPage) {%>                  
+            <%} else {%> 
+            <a href="/admin/adminCheck?page=<%=i%>"><%=i%></a>
+            <%}%>
+        <%}%>            
+        <%if(curSet < totalSet){%>
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true" onclick="location.href='/admin/adminCheck?page=<%=endPage+1%>'"></span>
+        <%}%>  
+    </div>    
+        
+
+</div>
+    
+<script type="text/javascript">    
+$(document).ready(function() {
+    $("#checkAll").click(function() {
+        if ($("#checkAll").prop("checked")) {
+            $("input[name=mcheck]").prop("checked", true);
+        } else {
+            $("input[name=mcheck]").prop("checked", false);
+        }
+    });
+
+    $("#send_form").submit(function(){
+        var from, to, subject, text;
+        var to = $("#send_to").val();
+        var title = $("#send_title").val();
+        var content = $("#send_content").val();
+
+        // 이메일 전송 후 submit
+        $("#message").text("Sending E-mail...Please wait");
+        $.get("http://localhost:3000/admin/mailToMember",{to:to, title:title, content:content},function(data){
+            if(data=="sent"){
+            $("#message").empty().html("<p>답변이메일이 전송되었습니다!</p>");
+                return true;
+            }
+        });        
+    });    
+
+    // 이메일 형식, 중복체크       
+    $('#userid').blur(function() {
+        var $useridInput = $('#register_form input[name=userid]');
+        var userid = $('#userid').val();
+        var userid_regex =  /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
+        var useridValue = $(this).val();
+        //값이 있을때만 진행
+        if(useridValue){
+            $.ajax({
+                url: '/accounts/checkuserid/'+useridValue.trim(), //trim 양쪽 공백이 있을시 제거
+                type: 'GET',
+            })
+            .done(function(args) {
+                if(args.userExist){ //아이디가 존재
+                    $('#msg_userid').html("이메일이 이미 존재합니다.").css("color", "red");
+                    $('#useridCheck').val(''); //못넘어가게 값을 비운다
+                    return false;
+                }else{ //아이디가 존재하지 않음
+                    if(userid_regex.test(useridValue)==false){
+                        $("#msg_userid").html("이메일 형식이 아닙니다.").css("color", "red");
+                        $('#useridCheck').val(''); //못넘어가게 값을 비운다
+                        return false;
+                    }else{    
+                        $('#msg_userid').html("사용 가능합니다.").css("color", "blue");
+                        $('#useridCheck').val('checked'); //유효성 통과하게 설정                        
+                    }
+                }
+            })
+            .fail(function(args) {
+                console.log(args);
+            });
+        }
+    });      
+
+
+    $("#authorizeMemberBtn").click(function(e) {    
+        var mcheck = $('input[name=mcheck]');    
+        var userEmail = "";
+        for(var i=0; i<mcheck.length; i++){
+            if(mcheck[i].checked == true){
+                userEmail += mcheck[i].value + ",";
+            }
+        }
+        console.log("userEmail===" + userEmail);        
+        //alert(userEmail);
+    });
+
+});
+
+function registerMember() {   
+    var $useridInput = $('#register_form input[name=userid]');
+    var $passwordInput = $('#register_form input[name=password]');
+    var $displayname = $('#register_form input[name=displayname]');
+    var password = $('#password').val();
+    var userid = $('#userid').val();
+    var userid_regex =  /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/; // 이메일 형식 체크
+    var password_regex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/; //비번 형식 체크         
+    var to = userid;
+    
+    if(!$useridInput.val()){
+        $("#msg_userid").html("아이디를 입력해주세요.").css("color","red");
+        $useridInput.focus();
+        return false;
+    }            
+    if($('#useridCheck').val()!=='checked'){
+        alert('아이디 체크를 진행해주세요');
+        return false;
+    }
+    
+    if(!$passwordInput.val()){
+        $("#msg_password").html("패스워드를 입력해주세요.").css("color","red");
+        $passwordInput.focus();
+        return false;
+    }                       
+    
+    if(!$displayname.val()){
+        $("#msg_displayname").html("이름을 입력해주세요.").css("color", "red");
+        $displayname.focus();
+        return false;
+    }        
+    
+    // 인증 메일 발송 (submit 버튼 클릭 시 인증 메일 발송되도록 함.)    
+    $.get("http://localhost:3000/admin/sendEmailToRegisterMember",{to:to, password:password},function(data){
+        if(data=="sent"){
+        console.log("등록 알림 메일 전송 성공!");
+        }
+    });    
+    // 검증완료시 action으로 넘어감
+    return true; 
+}
+
+
+function ideAuthorizeMember(userid) {
+    $.ajax({
+        url : '/admin/ideAuthorizeMember/'+userid,
+        type : 'POST'
+    })
+    .success(function(args) {                
+        if(args){
+            if(confirm(userid + " 회원에게 ide 권한을 부여하시겠습니까?")==true){
+                alert("권한이 부여되었습니다");
+                document.location.href ='/admin/memberCheck';
+            } else {
+                return;
+            }            
+        }
+    })
+    .fail(function(args) {
+        console.log(args);
+    });
+}
+
+function cancelIdeAuthorizeMember(userid) {
+    $.ajax({
+        url : '/admin/cancelIdeAuthorizeMember/'+userid,
+        type : 'POST'
+    })
+    .success(function(args) {                
+        if(args){
+            if(confirm(userid + " 해당 회원의 IDE 권한을 취소하시겠습니까?")==true){
+                alert("권한이 취소되었습니다");
+                document.location.href ='/admin/memberCheck';
+            } else {
+                return;
+            }            
+        }
+    })
+    .fail(function(args) {
+        console.log(args);
+    });
+}
+
+</script>
+
+
+<% include ../footer.ejs %>

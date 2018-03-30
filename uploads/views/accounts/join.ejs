@@ -1,0 +1,193 @@
+<% include ../header.ejs %>
+<div class="row">
+    <div class="col-md-4 col-md-offset-4">
+        <div class="login-panel panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">회원가입</h3>
+            </div>
+            <div class="panel-body">
+                <form role="form" action="" id="join_form" method="post" >
+                    <fieldset>
+                        <div class="form-group">
+                            아이디는 인증 가능한 이메일로 입력해주세요.
+                            <input class="form-control" placeholder="ID" name="userid" id="userid" type="email" autofocus=""  >
+                            <span id="msg_userid"></span><input type="hidden" id="useridCheck" value="">
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" placeholder="Name" name="displayname" type="text" value="" >
+                            <span id="msg_displayname"></span>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" placeholder="Password" name="password" id="password" type="password" value="" >
+                            <span id="msg_password"></span>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" placeholder="Password 확인" name="password2" type="password" value="" >
+                            <span id="msg_password2"></span>
+                        </div>  
+                        <br>        
+                                     
+                        <!-- Google reCAPTCHA                       
+                        <div class="g-recaptcha"  id="rcaptcha" data-sitekey="6Lcw7i8UAAAAAAS4xie9TFeqM0ASFynMFU15I5Hw"> 
+                        </div>                   
+                        <span id="msg_recaptcha"></span>
+                        !-->   
+                        <br>
+                        <br>
+                        <div>
+                            <input type="checkbox" name= "agreement" id="agreement"><label for="agreement"> (주)팝콘사가 제공하는 서비스 약관에 동의합니다. </label>
+                            <a href = "http://www.autosar.io/" target="_blank">약관보기</a>
+                            <span id="msg_agreement"></span><input type="hidden" id="agreementCheck" value="">  
+                        </div>
+
+                        <br>
+                        <br>                                
+                        아래 Sign in 버튼 클릭 시 가입 시 입력하신 이메일로 인증 메일이 발송됩니다.<br>
+                            이메일 인증을 하셔야 로그인이 가능합니다.<br><br>
+                                <b>24시간 이내 이메일 인증을 하지 않으실 경우 해당 아이디를 사용하실 수 없습니다.</b>            
+                        <br>
+                        <br>
+                        <input type="submit"  class="btn btn-lg btn-success btn-block" value="Sing in">   
+                        <br>
+                                               
+                        <!-- 소셜 회원가입 !-->
+                        <!--
+                        <div style="margin-top: 20px">
+                             <a class="btn btn-block btn-social btn-lg btn-facebook" href="/auth/facebook">
+                              <span class="fa fa-facebook"></span> Sign in with Facebook
+                            </a>
+                        </div>
+                        <div style="margin-top: 20px">
+                             <a class="btn btn-block btn-social btn-lg btn-google" href="/auth2/google">
+                             <span class="fa fa-google"></span> Sign in with google
+                            </a>
+                        </div>
+                        <div style="margin-top: 20px">
+                             <a class="btn btn-block btn-social btn-lg btn-github" href="/auth3/github">
+                              <span class="fa fa-github"></span> Sign in with github
+                            </a>
+                        </div>        
+                        !-->                                              
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>    
+<script type="text/javascript">
+(function(){   
+    $(document).ready(function(){
+        $('#join_form').submit(function(){
+            var $useridInput = $('#join_form input[name=userid]');
+            var $passwordInput = $('#join_form input[name=password]');
+            var $passwordInput2 = $('#join_form input[name=password2]');
+            var $displayname = $('#join_form input[name=displayname]');
+            var password = $('#password').val();
+            var userid = $('#userid').val();
+            var userid_regex =  /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/; // 이메일 형식 체크
+            var password_regex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/; //비번 형식 체크         
+            var from, to, subject, text;
+            
+            if(!$useridInput.val()){
+                $("#msg_userid").html("아이디를 입력해주세요.").css("color","red");
+                $useridInput.focus();
+                return false;
+            }            
+            if($('#useridCheck').val()!=='checked'){
+                alert('아이디 체크를 진행해주세요');
+                return false;
+            }
+          
+            if(!$passwordInput.val()){
+                $("#msg_password").html("패스워드를 입력해주세요.").css("color","red");
+                $passwordInput.focus();
+                return false;
+            }
+            if(!$passwordInput2.val()){
+                $("#msg_password2").html("확인 패스워드를 입력해주세요.").css("color", "red");
+                $passwordInput2.focus();
+                return false;
+            }
+            
+            if(password_regex.test(password) == false) {
+                $("#msg_password").html("비밀번호는 8~15자리 영어와 숫자, 특수문자가 모두 포함되어야 합니다").css("color","red");
+                $passwordInput.focus();
+                return false;
+            }
+            if($passwordInput.val() !== $passwordInput2.val()){
+                $("#msg_password2").html("패스워드가 다릅니다.").css("color", "red");
+                return false;
+            }
+            if(!$displayname.val()){
+                $("#msg_displayname").html("이름을 입력해주세요.").css("color", "red");
+                $displayname.focus();
+                return false;
+            }        
+           
+            if($('input:checkbox[name=agreement]').is(':checked') == false){
+                $("#msg_agreement").html("서비스 약관에 동의해주시기 바랍니다.").css("color", "red");
+                return false;
+            }       
+
+            // 구글 캡챠 체크
+            /*
+            var v = grecaptcha.getResponse();           
+            if(v.length == 0) {
+                document.getElementById('msg_recaptcha').innerHTML="로봇이 아닙니다를 체크해주세요";
+                return false;
+            } else {
+                document.getElementById('msg_recaptcha').innerHTML="로봇이 아닙니다 체크 완료";
+            }          
+            */
+            
+            // 인증 메일 발송 (submit 버튼 클릭 시 인증 메일 발송되도록 함.)
+            to = userid;
+            $.get("http://localhost:3000/accounts/send",{to:to},function(data){
+                if(data=="sent"){
+                console.log("인증 메일 전송 성공!");
+                }
+            });      
+
+            // 검증완료시 action으로 넘어감
+            return true;
+        });        
+        
+        // 이메일 형식, 중복체크       
+        $('#userid').blur(function() {
+            var $useridInput = $('#join_form input[name=userid]');
+            var userid = $('#userid').val();
+            var userid_regex =  /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
+            var useridValue = $(this).val();
+            //값이 있을때만 진행
+            if(useridValue){
+                $.ajax({
+                    url: '/accounts/checkuserid/'+ useridValue.trim(), //trim 양쪽 공백이 있을시 제거
+                    type: 'GET',
+                })
+                .done(function(args) {
+                    if(args.userExist){ //아이디가 존재
+                        $('#msg_userid').html("이메일이 이미 존재합니다.").css("color", "red");
+                        $('#useridCheck').val(''); //못넘어가게 값을 비운다
+                        return false;
+                    }else{ //아이디가 존재하지 않음
+                        if(userid_regex.test(useridValue)==false){
+                            $("#msg_userid").html("이메일 형식이 아닙니다.").css("color", "red");
+                            $('#useridCheck').val(''); //못넘어가게 값을 비운다
+                            return false;
+                        }else{    
+                            $('#msg_userid').html("사용 가능합니다.").css("color", "blue");
+                            $('#useridCheck').val('checked'); //유효성 통과하게 설정                        
+                        }
+                    }
+                })
+                .fail(function(args) {
+                    console.log(args);
+                });
+            }
+        });    
+    });
+})();
+
+
+</script>
+<% include ../footer.ejs %>

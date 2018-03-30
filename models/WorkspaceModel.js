@@ -16,19 +16,13 @@ var WorkspaceSchema = new Schema({
     ide_ec2_private_ip : {
         type : String 
     },
-    ide_elb_name : {
-        type : String
-    },
     ide_elb_dns : { // ide aws elb dns
-        type : String
-    },
-    ide_url : {
         type : String
     },
     ide_create_at : {
         type : Date,
         default : Date.now()
-    }
+    }    
 });
 
 WorkspaceSchema.virtual('getDate').get(function() {

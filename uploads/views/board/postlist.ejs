@@ -1,0 +1,52 @@
+<% include ../header.ejs %>
+    <div class = "col-sm-10">
+        <table class="table table-bordered table-hover">
+        <h3><p class="text-center">게시판</p></h3>
+        <br>
+        <a href="/board/posts/write" class="btn btn-default">작성하기</a>
+        <br>
+        <br>
+            <tr>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>작성일</th>
+                <th>조회수</th>
+                <th>삭제</th>
+            </tr>
+            
+            <% posts.forEach( function(post) { %>
+            <tr>
+                <td>
+                    <a href="/board/posts/detail/<%=post.id%>"><%=post.board_title%></a>
+                </td>
+                <td><%=post.userid%></td>
+                <td>
+                    <%=post.getDate.year%> -
+                    <%=post.getDate.month%> -
+                    <%=post.getDate.day%>
+                </td>         
+                <td><%=post.hit%></td>
+                <td>
+                    <a href="/board/posts/delete/<%=post.id%>" class="btn btn-danger" onclick="return confirm('삭제하시겠습니까?')">삭제</a>
+                </td>
+            </tr>
+            <%});%>
+        </table>
+
+        <div class="paging">
+            <%if(curSet > 1){%> 
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true" onclick="location.href='/board/postList?page=<%=startPage-1%>'"></span>
+            <%}%>            
+            <%for(var i = startPage; i <= endPage; i++){%>
+                <%if(i > totalPage) {%>                  
+                <%} else {%> 
+                <a href="/board/postList?page=<%=i%>"><%=i%></a>
+                <%}%>
+            <%}%>            
+            <%if(curSet < totalSet){%>
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true" onclick="location.href='/board/postList?page=<%=endPage+1%>'"></span>
+            <%}%>  
+        </div>
+    </div>
+    
+<% include ../footer.ejs %>

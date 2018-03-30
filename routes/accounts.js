@@ -40,12 +40,12 @@ passport.use(new LocalStrategy({
         UserModel.findOne({userid : userid , password : passwordHash(password)}, function (err,user) {
             if (!user){
                 // done false -> 미들웨어 통과 못하게 막음
-                return done(null, false, { message: language(req).login.CheckMessage});
+                return done(null, false, { message: '아이디 또는 비밀번호 오류 입니다.' });
             }else if (user.email_verification_state == false){
-                req.session.userid=userid;          
-                return done(null, false, { message : language(req).login.notEmailCheckMessage });     
+                req.session.userid=userid;
+                return done(null, false, { message: '이메일 인증이 안된 회원입니다.' });     
             }else if (user.dormant_state == true){
-                return done(null, false, { message : language(req).login.dormancyMessage });
+                return done(null, false, { message: '휴면 회원입니다.' });
             }else if (user.state == true){
                 // 로그인 성공 시 // user session setting
                 // 로그인 시 로그인 시간 저장                
@@ -130,18 +130,6 @@ router.get('/checkuserid/:userid', function(req, res) {
     });
 });
 
-
-// 닉네임 중복체크
-router.get('/checkDisplayname/:displayname', function(req, res) {
-    UserModel.findOne({displayname: req.params.displayname}, function(err,result) {
-        if(result){
-            res.json({ displaynameExist : true });       
-        }else{
-            res.json({ displaynameExist : false });
-        }         
-    });
-});
-
 // 해당 이메일 휴면계정 존재 여부 체크
 router.get('/checkDormantAccount/:userid', function(req, res) {
     UserModel.findOne({userid: req.params.userid}, function(err,result) {
@@ -158,12 +146,6 @@ router.get('/join', function(req, res) {
     res.render('accounts/join',{language : language(req)});
 });
 
-// test
-router.get('/test', function(req, res) {
-    res.render('accounts/joinSuccessEmailAlarm',{ language : language(req) });
-});
-
-
 // 회원가입
 router.post('/join', function(req, res) {     
     var User = new UserModel({
@@ -171,9 +153,9 @@ router.post('/join', function(req, res) {
         password : passwordHash(req.body.password),
         displayname : req.body.displayname,
         // ********테스트 종료 후 아래는 반드시 삭제할 것********
-        // authority : 1,
-        // ide_authority : true,
-        // email_verification_state : true
+        authority : 1,
+        ide_authority : true,
+        email_verification_state : true
     });
     User.save(function(err) {
        //res.send('<script>alert("회원가입 완료! 이메일 인증을 해주세요");location.href="/accounts/login";</script>');
@@ -243,7 +225,7 @@ router.get('/verify',function(req,res){
                                 function(err) {
                                     //res.end("<h1>Email "+mailOptions.to+" is been Successfully verified");  
                                     res.writeHead(200, {"Content-Type": "text/html; charset=utf-8"});
-                                    res.end('<script>alert("'+language(req).joinCompleted+'");location.href="/";</script>');   
+                                    res.end('<script>alert("이메일 인증 완료되었습니다.");location.href="/";</script>');   
                                 }
                             );
                         });
@@ -274,11 +256,12 @@ router.get('/sendRandomPassword',function(req,res){
     });
     randomPassword = random;
 	host=req.get('host');
-    link="http://"+req.get('host')+"/";
+    link="http://"+req.get('host')+"/accounts/login";
 	mailOptions={
 		to : req.query.to,
-		subject : language(req).findPassword.subject,
-        html : language(req).findPassword.html  + randomPassword + "<br><a href="+link+"> <br>Login </a><br><br>PopcornSAR"	
+		subject : "팝콘사 - 임시 비밀번호입니다.",
+        html : "아래와 같이 요청하신 임시비밀번호가 발급되었습니다.<br> 로그인 후 임시비밀번호를 반드시 변경하시기 바랍니다.  ..<br>\
+                <br> 임시비밀번호 :"  + randomPassword + "<br><a href="+link+"> <br>Login </a><br><br>PopcornSAR"	
 	}
 	console.log(mailOptions);
 	smtpTransport.sendMail(mailOptions, function(error, response){
@@ -364,7 +347,7 @@ router.get('/myMainPage', function(req, res) {
 // 회원정보 수정 페이지로 이동
 router.get('/update/:id', loginRequired, function(req, res){
     UserModel.findOne({ 'id' : req.user.id }, function(err, user){
-        res.render('mypage/updateform', {req:req, user : user, language: language(req) });
+        res.render('mypage/updateForm', {req:req, user : user, language: language(req) });
     });    
 });
 

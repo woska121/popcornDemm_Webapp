@@ -6,7 +6,6 @@ var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var flash = require('connect-flash'); //flash  메시지 관련
 var i18n = require('i18n'); // 다국어 
-var language = require('./libs/language'); // 다국어 설정 모듈
 var passport = require('passport'); //passport 로그인 관련
 var session = require('express-session');
 
@@ -100,10 +99,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended : true }));
 app.use(cookieParser());
 app.use(i18n.init); // 다국어
+
 app.use('/uploads', express.static('uploads')); //업로드 path 추가
 app.use('/buploads', express.static('buploads')); //buploads path 추가
 app.use('/static', express.static('static')); //static path 추가
-app.use('/public', express.static('public')); //public path 추가
 app.use(sessionMiddleWare); //session 추가
 app.use(passport.initialize()); //passport 적용
 app.use(passport.session()); //passport 적용
@@ -117,6 +116,7 @@ app.use(function(req, res, next) {
   app.locals.userData = req.user; //사용 정보를 보내고 싶으면 이와같이 셋팅------ 충돌시 주석 풀기
   next();
 });
+
 
 //////////////////// router 미들웨어 등록 //////////////////////
 app.use('/', accounts);
@@ -133,9 +133,8 @@ app.use('/accounts', accounts);
 // app.use('/board',board);
 // app.use('/promotion',promotion);
 
-app.use(function(req, res, next){ //404 error 처리 , 미들웨어 마지막에 둘것.
-    res.status(404).render('error/404', {language: language(req)});
-});
+
+
 
 /*
 // 라우팅 추가(http://127.0.0.1:3000/posts)
@@ -156,11 +155,10 @@ app.get('/posts', function(req, res){
 // var socket = require('./libs/socketConnection');
 // socket(io);
 
-
 module.exports = app;
 
 
-// 20171227 demo-0.2.3 by Nami+Kelly
+// 20171213 0.2.0 by Kelly
 
 
 

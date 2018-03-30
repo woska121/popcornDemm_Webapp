@@ -1,0 +1,458 @@
+<% include ../header.ejs %>
+<% include ./sidebar.ejs %>
+<div class="col-sm-10">
+    <table class="table table-bordered table-hover">
+        <h3><p class="text-center">전체 회원 조회</p></h3><br>
+        <button class="btn btn-primary" data-toggle="modal" id="sendEmail" onclick="showModal();">이메일 발송</button> 
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button class="btn btn-primary" data-toggle="modal" data-target="#registerMemberModal">회원 추가</button>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <!-- <button class="btn btn-primary" id="authorizeMemberBtn">권한 부여</button> !-->
+        <button class="btn btn-info" onclick="exportTableToCSV('members.csv')">.csv파일로 다운로드</button>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <button class="btn btn-info" data-toggle="modal" data-target="#importExcelModal">회원 excel impot 추가</button>
+        <br>
+        <br>
+        <tr>
+            <th><input type="checkbox" id="checkAll"></th>
+            <th>소속</th>
+            <th>아이디</th>
+            <th>닉네임</th>
+            <th>회원가입일</th>
+            <th>이메일인증여부</th>
+            <th>결제상태</th>
+            <th>IDE 권한</th>
+            <th>IDE권한부여/취소</th>
+            <!--<th>강제탈퇴처리</th>!-->
+        </tr>            
+        <% user.forEach(function(user) { %>                 
+            <tr>           
+                <td><input type="checkbox" name="mcheck" value="<%=user.userid%>"></td>
+                <td><%=user.company_name%></td>
+                <td><%=user.userid%></td>
+                <td><%=user.displayname%></td>
+                <td> 
+                    <%=user.getDate.year%> -
+                    <%=user.getDate.month%> - 
+                    <%=user.getDate.day%>
+                </td>
+                <% if(user.email_verification_state == true) {%>
+                    <td>인증</td>
+                <%} else {%>
+                    <td>미인증</td>
+                <%}%>
+                <td></td>
+                <% if(user.ide_authority == true) {%>
+                    <td>사용가능</td>
+                <%} else {%>
+                    <td>불가</td>
+                <%}%>
+                <td><button class="btn btn-primary" onclick="ideAuthorizeMember('<%=user.userid%>')">IDE권한부여</button>
+                <br><br>
+                <button class="btn btn-danger" onclick="cancelIdeAuthorizeMember('<%=user.userid%>')">IDE권한취소</button>
+                </td>
+                <!--<td><button class="btn btn-danger" onclick="forcedWithdrawMember('<%=user.userid%>')">강제탈퇴</button></td>!-->
+            </tr>            
+        <%})%>
+    </table>
+        
+    <div class="paging">
+        <%if(curSet > 1){%> 
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true" onclick="location.href='/admin/memberCheck?page=<%=startPage-1%>'"></span>
+        <%}%>            
+        <%for(var i = startPage; i <= endPage; i++){%>
+            <%if(i > totalPage) {%>                  
+            <%} else {%> 
+            <a href="/admin/memberCheck?page=<%=i%>"><%=i%></a>
+            <%}%>
+        <%}%>            
+        <%if(curSet < totalSet){%>
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true" onclick="location.href='/admin/memberCheck?page=<%=endPage+1%>'"></span>
+        <%}%>  
+    </div>    
+    
+    <div>
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">            
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">메일 보내기</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form" action="" id="send_form" method="post" >            
+                <input class="form-control" id="send_to" name="send_to" required>                   
+                <br>
+                <input class="form-control" id="send_title" name="send_title" placeholder="제목을 입력하세요." required>
+                <br>
+                <textarea class="form-control" id="send_content" name="send_content" placeholder="내용을 입력하세요." rows="5" required></textarea><br>                    
+                <br>
+                <input type="submit"  class="btn btn-lg btn-success btn-block" value="전송">   
+                <span id="message"></span>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+
+    <div>
+    <div class="modal fade" id="registerMemberModal" role="dialog">
+        <div class="modal-dialog">            
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">회원 추가</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form" id="register_form" method="post" action="/admin/registerMember" onsubmit="return registerMember();">
+                    <fieldset>
+                        <div class="form-group">
+                            <label for="userid" class="col-sm-3 control-label">User Id</label>
+                            <div class="col-sm-9">
+                                <input type="email" id="userid" name="userid" placeholder="Email" class="form-control" autofocus="">
+                                <span id="msg_userid"></span><input type="hidden" id="useridCheck" value="">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="displayname" class="col-sm-3 control-label">Name</label>
+                            <div class="col-sm-9">
+                                <input type="text" id="displayname" name="displayname" placeholder="Name" class="form-control">
+                                <span id="msg_displayname"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="col-sm-3 control-label">Password</label>
+                            <div class="col-sm-9">
+                                <input type="password" id="password" name="password" placeholder="Password" class="form-control">
+                                <span id="msg_password"></span>
+                            </div>
+                        </div> 
+                        <div class="form-group">
+                            <label for="company_name" class="col-sm-3 control-label">Company Name</label>
+                            <div class="col-sm-9">
+                                <input type="text" id="company_name" name="company_name" placeholder="Company Name" class="form-control">
+                                <span class="help-block">기업 단체 회원의 경우 기업명 명시</span>
+                                <span id="msg_company_name"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-9 col-sm-offset-3">
+                            <input type="submit" class="btn btn-primary btn-block" value="Register"/>
+                        </div>                   
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+
+    
+    <div>
+        <div class="modal fade" id="importExcelModal" role="dialog">
+            <div class="modal-dialog">            
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">회원 EXCEL Import</h4>
+                </div>
+                <div class="modal-body">     
+                    <form role="form" id="import_form" enctype="multipart/form-data" method="post" onsubmit="return csvImportMember();">          
+                        <div>
+                            <input type="text" class="form-control-file" id="uploadFile" name="uploadFile"><br> 
+
+                            <span id="msg_uploadfile"></span><br><br>
+                            <p>&nbsp;&nbsp;확장자 .csv 파일만 가능합니다.<br>
+                            &nbsp;&nbsp;DB저장 버튼 클릭 시 해당 .csv 파일이 회원 DB에 저장됩니다.</p>
+                            <button type="button" class="btn btn-primary pull-right" onclick="csvImportMember();">회원 추가</button>
+                            <br>
+                        </div>
+                    </form>                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>       
+            </div>
+            </div>
+        </div>
+    </div>    
+
+</div>
+    
+<script type="text/javascript">    
+$(document).ready(function() {
+    $("#checkAll").click(function() {
+        if ($("#checkAll").prop("checked")) {
+            $("input[name=mcheck]").prop("checked", true);
+        } else {
+            $("input[name=mcheck]").prop("checked", false);
+        }
+    });
+
+    $("#send_form").submit(function(){
+        var from, to, subject, text;
+        var to = $("#send_to").val();
+        var title = $("#send_title").val();
+        var content = $("#send_content").val();
+
+        // 이메일 전송 후 submit
+        $("#message").text("Sending E-mail...Please wait");
+        $.get("http://localhost:3000/admin/mailToMember",{to:to, title:title, content:content},function(data){
+            if(data=="sent"){
+            $("#message").empty().html("<p>답변이메일이 전송되었습니다!</p>");
+                return true;
+            }
+        });        
+    });    
+
+    // 이메일 형식, 중복체크       
+    $('#userid').blur(function() {
+        var $useridInput = $('#register_form input[name=userid]');
+        var userid = $('#userid').val();
+        var userid_regex =  /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
+        var useridValue = $(this).val();
+        //값이 있을때만 진행
+        if(useridValue){
+            $.ajax({
+                url: '/accounts/checkuserid/'+useridValue.trim(), //trim 양쪽 공백이 있을시 제거
+                type: 'GET',
+            })
+            .done(function(args) {
+                if(args.userExist){ //아이디가 존재
+                    $('#msg_userid').html("이메일이 이미 존재합니다.").css("color", "red");
+                    $('#useridCheck').val(''); //못넘어가게 값을 비운다
+                    return false;
+                }else{ //아이디가 존재하지 않음
+                    if(userid_regex.test(useridValue)==false){
+                        $("#msg_userid").html("이메일 형식이 아닙니다.").css("color", "red");
+                        $('#useridCheck').val(''); //못넘어가게 값을 비운다
+                        return false;
+                    }else{    
+                        $('#msg_userid').html("사용 가능합니다.").css("color", "blue");
+                        $('#useridCheck').val('checked'); //유효성 통과하게 설정                        
+                    }
+                }
+            })
+            .fail(function(args) {
+                console.log(args);
+            });
+        }
+    });      
+
+
+    $("#authorizeMemberBtn").click(function(e) {    
+        var mcheck = $('input[name=mcheck]');    
+        var userEmail = "";
+        for(var i=0; i<mcheck.length; i++){
+            if(mcheck[i].checked == true){
+                userEmail += mcheck[i].value + ",";
+            }
+        }
+        console.log("userEmail===" + userEmail);        
+        //alert(userEmail);
+    });
+
+});
+
+function registerMember() {   
+    var $useridInput = $('#register_form input[name=userid]');
+    var $passwordInput = $('#register_form input[name=password]');
+    var $displayname = $('#register_form input[name=displayname]');
+    var password = $('#password').val();
+    var userid = $('#userid').val();
+    var userid_regex =  /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/; // 이메일 형식 체크
+    var password_regex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/; //비번 형식 체크         
+    var to = userid;
+    
+    if(!$useridInput.val()){
+        $("#msg_userid").html("아이디를 입력해주세요.").css("color","red");
+        $useridInput.focus();
+        return false;
+    }            
+    if($('#useridCheck').val()!=='checked'){
+        alert('아이디 체크를 진행해주세요');
+        return false;
+    }
+    
+    if(!$passwordInput.val()){
+        $("#msg_password").html("패스워드를 입력해주세요.").css("color","red");
+        $passwordInput.focus();
+        return false;
+    }                       
+    
+    if(!$displayname.val()){
+        $("#msg_displayname").html("이름을 입력해주세요.").css("color", "red");
+        $displayname.focus();
+        return false;
+    }        
+    
+    // 인증 메일 발송 (submit 버튼 클릭 시 인증 메일 발송되도록 함.)    
+    $.get("http://localhost:3000/admin/sendEmailToRegisterMember",{to:to, password:password},function(data){
+        if(data=="sent"){
+        console.log("등록 알림 메일 전송 성공!");
+        }
+    });    
+    // 검증완료시 action으로 넘어감
+    return true; 
+}
+
+
+function ideAuthorizeMember(userid) {
+    $.ajax({
+        url : '/admin/ideAuthorizeMember/'+userid,
+        type : 'POST'
+    })
+    .success(function(args) {                
+        if(args){
+            if(confirm(userid + " 회원에게 ide 권한을 부여하시겠습니까?")==true){
+                alert("권한이 부여되었습니다");
+                document.location.href ='/admin/memberCheck';
+            } else {
+                return;
+            }            
+        }
+    })
+    .fail(function(args) {
+        console.log(args);
+    });
+}
+
+function cancelIdeAuthorizeMember(userid) {
+    $.ajax({
+        url : '/admin/cancelIdeAuthorizeMember/'+userid,
+        type : 'POST'
+    })
+    .success(function(args) {                
+        if(args){
+            if(confirm(userid + " 해당 회원의 IDE 권한을 취소하시겠습니까?")==true){
+                alert("권한이 취소되었습니다");
+                document.location.href ='/admin/memberCheck';
+            } else {
+                return;
+            }            
+        }
+    })
+    .fail(function(args) {
+        console.log(args);
+    });
+}
+
+function csvImportMember(){
+    var qq = $('#uploadFile').val();
+    console.log(qq);
+    var uploadFile = document.getElementById('uploadFile').value;
+    console.log(uploadFile);
+    var fileExt = uploadFile.slice(uploadFile.indexOf(".") + 1).toLowerCase();
+    if(uploadFile == '') {
+        $("#msg_uploadfile").html("파일을 선택하세요.").css("color", "red");
+        return false;            
+    } else {
+        if(fileExt == "csv") {
+            //csv파일 import ajax 처리
+            $.get("http://localhost:3000/admin/csvImportMember",{uploadFile:uploadFile},function(data){
+                if(data=="sent"){
+                console.log("회원등록완료");
+                }
+            }); 
+
+        } else {
+            $("#msg_uploadfile").html(".csv 파일이 아닙니다.").css("color", "red");
+            return false;
+        }
+    }
+}
+
+function forcedWithdrawMember(userid) {
+    $.ajax({
+        url : '/admin/forcedWithdrawMember/'+userid,
+        type : 'POST'
+    })
+    .success(function(args) {                
+        if(args){
+            if(confirm(userid + " 회원을 강제탈퇴하시겠습니까?")==true){
+                alert("탈퇴되었습니다");
+                document.location.href ='/admin/memberCheck';
+            } else {
+                return;
+            }            
+        }
+    })
+    .fail(function(args) {
+        console.log(args);
+    });
+}
+
+function showModal() {    
+    var mcheck = $("input[name=mcheck]");
+    var userEmail = "";
+    for(var i=0; i<mcheck.length; i++){
+        if(mcheck[i].checked == true){
+            userEmail += mcheck[i].value + ",";
+        }
+    }
+    console.log("userEmail===" + userEmail);
+    $("#myModal").modal('show');
+    $("#myModal").on('shown.bs.modal', function (e) {        
+        var userEmail2 = userEmail.slice(0, -1);
+        $(".modal-dialog #send_to").val(userEmail2); 
+    });                    
+}
+
+function exportTableToCSV(filename) {
+    var csv = [];
+    var rows = document.querySelectorAll("table tr");
+    for (var i = 0; i < rows.length; i++) {
+        var row = [], cols = rows[i].querySelectorAll("td, th");
+        // for (var j = 0; j < cols.length; j++) -> 강제탈퇴처리 버튼까지 보이게됨, 추후 컬럼 추가 시 변경가능성
+        for (var j = 0; j < cols.length-1; j++) 
+            row.push(cols[j].innerText);
+        
+        csv.push(row.join(","));        
+    }
+
+    // Download CSV file
+    downloadCSV(csv.join("\n"), filename);
+}
+
+function downloadCSV(csv, filename) {
+    var csvFile;
+    var downloadLink;
+
+    // CSV file
+    csvFile = new Blob(['\uFEFF' + csv], {type: 'text/csv;charset=utf-8'});
+
+    // Download link
+    downloadLink = document.createElement("a");
+
+    // File name
+    downloadLink.download = filename;
+
+    // Create a link to the file
+    downloadLink.href = window.URL.createObjectURL(csvFile);
+
+    // Hide download link
+    downloadLink.style.display = "none";
+
+    // Add the link to DOM
+    document.body.appendChild(downloadLink);
+
+    // Click download link
+    downloadLink.click();
+}
+
+
+
+</script>
+
+
+<% include ../footer.ejs %>

@@ -414,7 +414,7 @@ router.get('/adminCheck', adminRequired, function(req, res){
     if(page == null) {
         page = 1;
     }    
-    UserModel.count({'authority' : 1, 'authority' : 2}, function(err, totalCount){
+    UserModel.count({'authority' : 2}, function(err, totalCount){
         if(err) throw err;        
         var maxPageInSet = 5,   //페이지 카운트 갯수
             maxEntityInPage = 10,   // 한 페이지당 컨텐츠 수
@@ -425,7 +425,7 @@ router.get('/adminCheck', adminRequired, function(req, res){
             startPage = ((curSet-1)*maxPageInSet)+1, //현재 세트 내 출력될 시작 페이지
             endPage = (startPage+maxPageInSet)-1; //현재 세트내 출력될 마지막 페이지 
 
-            UserModel.find({$or: [{'authority' : 1}, {'authority' : 2}]}).sort({date:-1}).skip(skipPage).limit(maxEntityInPage).exec(function(err, user) {
+        UserModel.find({'authority' : 2}).sort({date:-1}).skip(skipPage).limit(maxEntityInPage).exec(function(err, user) {
             if(err) throw err;
             res.render('admin/adminCheckPage', {user : user, curSet:curSet, startPage:startPage, endPage:endPage, 
                 totalPage:totalPage, page:page, totalSet:totalSet, language : en });

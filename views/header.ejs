@@ -2,131 +2,105 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <meta name="format-detection" content="telephone=no" />
-    <title>PopcornSAR Demo</title>
-
-    <!-- favicon.ico -->
-    <link rel="shortcut icon" href="/public/favicon.ico">
-
-    <!-- Bootstrap Core CSS -->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>demo.popcornsar.io</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <!-- Bootstrap Social Buttons CSS -->
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/5.1.1/bootstrap-social.css">
-
     <!--폰트어섬추가 -->
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
-    <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-    <!-- Adobe typekit -->
-    <script src="https://use.typekit.net/gst5wdp.js"></script>
-    <script>try{Typekit.load({ async: true });}catch(e){}</script>
-
-    <!-- Jquery -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/5.1.1/bootstrap-social.css">
+    <!--폰트어섬추가 -->    
+    <!--bootstrap js 추가 -->
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
-    
-    <!--bootstrap core js & validator 추가 -->
+    <!--<script type="text/javascript" src="https://cdnjs.com/libraries/1000hz-bootstrap-validator"></script>-->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.min.js"></script>
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    
     <!-- Google reCAPTHA -->
-    <script src="https://www.google.com/recaptcha/api.js"></script>   
-    
-    <!-- Theme CSS -->
-    <link href="/public/css/style.css" type="text/css" rel="stylesheet">
+    <script src="https://www.google.com/recaptcha/api.js"></script>    
 </head>
-
-<body id="page-top" class="index">
-    <div class="wrap">
-
-        <!-- Navigation -->
-        <nav class="navbar navbar-default navbar-custom"> <!-- navbar-fixed-top -->
-            <div class="container">
-                <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header page-scroll">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#MyNavbar">
-                        <span class="sr-only">Toggle navigation</span>MENU<i class="fa fa-bars"></i>
-                    </button>
+<body>
+    <div class="container" style="padding-top: 10px;">
+        <nav class="navbar navbar-inverse"> 
+            <div class="container-fluid"> 
+                <div class="navbar-header">
+                    <!-- 오른쪽 메뉴바 -->
+                    <button type="button" class="collapsed navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-9" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span> 
+                        <span class="icon-bar"></span> 
+                        <span class="icon-bar"></span>
+                    </button>                     
                     <% if(isLogin) { %>
-                        <a class="navbar-brand" href="/toolide/workspaceList"><img class="logoid" src="/public/img/logo.png" /></a>
+                        <a href="/toolide/workspaceList" class="navbar-brand"><%= language.header.logo%></a>
                     <% } else { %>
-                        <a href="/" class="navbar-brand"><img class="logoid" src="/public/img/logo.png" /></a>
+                        <a href="/" class="navbar-brand"><%= language.header.logo%></a>
                     <%} %>
-                </div>
-
-                <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="MyNavbar">
-                    <ul class="nav navbar-nav navbar-right">
-                        
-                        <!-- <li class="active"> <a href="/accounts/login">Home</a></li> -->
+                   
+                </div> 
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-9">
+                    <ul class="nav navbar-nav">
+                        <li class="active">
+                            <!--<a href="/accounts/login">Home</a>-->
+                        </li>
                         <!-- <% if(typeof(userData)!=='undefined' && userData.authority===true){ %>
                             <li><a href="/admin/adminMainpage">ADMIN</a></li> 
                         <%}%> --> 
                         <!-- <li><a href="/pay/pricelist">CYBER MONEY</a></li> -->
                         <!-- <li><a href="/products/productlist">PRODUCT LIST</a></li> -->
-                        
+                       
                         <!-- 로그인 되어있으면 logout 버튼 -->
                         <% if(isLogin){%>
                             <li><a href="/accounts/logout" onclick="return confirm('<%= language.logoutMessage%>')"><%= language.header.logout%></a></li>
-                            <li><a href="/accounts/update/:id"><%= language.header.mypage%></a></li>
+                            <li><a href="/accounts/myMainPage"><%= language.header.mypage%></a></li>
                             <%  if(userData.ide_authority==true) {%>
                                 <li><a href="/toolide/workspaceList"><%= language.header.toolide%></a></li>
-                            <%}%>                                                
+                            <%}%>                       
                         <%}else{%>
                             <!-- <li><a href="/">Home</a></li> -->
                             <li><a href="/"><%= language.header.login%> </a></li> 
                             <!-- <li><a href="/accounts/login">LOGIN</a></li> -->
                         <%}%>
+
+                        <!-- 다국어 선택 Dropdown-->
                         <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                <img src="/public/img/icons/language.png"/>
-                                <%= language.header.language%><span class="caret"></span>
-                            </a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><%= language.header.language%>
+                            <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a id="English" href="" value="EN"><%= language.header.en%></a></li>
-                                <li><a id="Japanese" href="" value="JP"><%= language.header.jp%></a></li>
+                            <li><a id="English" href="" value="EN"><%= language.header.en%></a></li>
+                            <li><a id="Japanese" href="" value="JP"><%= language.header.jp%></a></li>
                             </ul>
                         </li>
-                    </ul>
-                </div>
-                <!-- /.navbar-collapse -->
-            </div>
-            <!-- /.container-fluid -->
+
+                    </ul> 
+                </div> 
+            </div> 
         </nav>
 
-    <script>
-        $(document).ready(function(){
-            $("#English,#Japanese").click(function(){
-                // 현재 내 path
-                // var path = document.location.href; //http://localhost:3000/ 
-                var path = document.location.href.substring(21); 
-                
-                // http://demo.autosar.io로 변경하기
-                // var path = document.location.href.substring(22); 
+        <script>
+            $(document).ready(function(){
+                $("#English,#Japanese").click(function(){
+                    // 현재 내 path
+                    // var path = document.location.href; //http://localhost:3000/
+                    var path = document.location.href.substring(21); 
+                    
+                    // http://demo.autosar.io로 변경하기
+                    // var path = document.location.href.substring(22); 
 
-                // var language = $(this).text();
-                var language = $(this).attr("value");
-                $.ajax({
-                    url : '/accounts/navbarLanguage',
-                    type : 'POST',
-                    data : {
-                        path : path,
-                        language : language
-                    }
-                }).done(function(args){
-                    if(args.message === 'success'){
-                        document.location.href=path;
-                    }
+                    // var language = $(this).text();
+                    var language = $(this).attr("value");
+                    $.ajax({
+                        url : '/accounts/navbarLanguage',
+                        type : 'POST',
+                        data : {
+                            path : path,
+                            language : language
+                        }
+                    }).done(function(args){
+                        if(args.message === 'success'){
+                            document.location.href=path;
+                        }
+                    });
                 });
             });
-        });
         </script>
     

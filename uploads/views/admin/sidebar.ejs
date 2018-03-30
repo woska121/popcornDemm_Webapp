@@ -1,0 +1,20 @@
+<div class="col-sm-2">
+    <div class="panel panel-default">
+        <div class="panel-heading">메뉴</div>
+        <div class="panel-body">
+            <ul>
+                <!--<li><a href="/admin/CompanyQuoteState">기업견적문의 현황</a></li>!-->
+                <!--<li><a href="/admin/CompanyManage">기업회원관리</li>!-->
+                <li><a href="/admin/memberCheck">전체회원조회</a></li>
+                <!--<li><a href="/admin/emailNotVerificationMember">이메일미인증회원조회</a></li>!-->
+                <%  if(userData.authority==1) {%>
+                <li><a href="/admin/adminCheck">관리자조회</a></li>
+                <%}%>
+                <!--<li><a href="/admin/withdrawMemberManage">탈퇴회원관리</a></li>!-->
+                <!--<li><a href="/admin/dormancyMemberManage">휴면회원관리</a></li>!-->
+                <!--<li><a href="/admin/statistics">통계</a></li>!-->
+                <!--<li><a href="/promotion/sendcode">프로모션 코드</a></li>!-->
+            </ul>
+        </div>
+    </div>
+</div>

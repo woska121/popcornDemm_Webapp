@@ -1,0 +1,145 @@
+<% include ../header.ejs %>
+<% include ./sidebar.ejs %>
+<div class="row">
+    <div class="col-md-4 col-md-offset-4">
+        <div class="login-panel panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">회원정보수정</h3>
+            </div>
+            <div class="panel-body">
+                <form role="form" action="" id="update_form" method="post">
+                    <fieldset>                        
+                        <%if (user.userid.indexOf("fb_")==0 || user.userid.indexOf("g_")==0 || user.userid.indexOf("git_")==0) {%>                                              
+                            <div>
+                            계정 회원가입하셨으므로 정보 변경을 원하시면 해당 홈페이지에서 변경하셔야 합니다.
+                            </div>
+                        <%} else {%>
+                        <div class="form-group"> 이름
+                            <input class="form-control" value="<%=user.displayname %>"placeholder="이름" name="displayname" type="text" >
+                            <span id="msg_displayname"></span>
+                        </div>
+                        <div class="form-group"> 아이디
+                            <input class="form-control" value="<%=user.userid %>" name="userid" id="userid" type="email" autofocus=""  readonly>
+                            <span id="msg_userid"></span><input type="hidden" id="useridCheck" value="">
+                        </div>
+                        <div class="form-group"> 현재 비밀번호
+                            <input class="form-control" name="now_password" id="now_password" type="password" value="">
+                            <span id="msg_password"></span><input type="hidden" id="passwordCheck" value="">
+                        </div>
+                        <div class="form-group"> 새 비밀번호
+                            <input class="form-control" name="new_password" id="new_password" type="password" value="" >
+                            <span id="msg_password2"></span>
+                        </div>
+                        <div class="form-group"> 새 비밀번호 확인 
+                            <input class="form-control"  name="new_password_confirm" id="new_password_confirm" type="password" value="" >
+                            <span id="msg_password3"></span>
+                        </div>           
+                        <br>    
+                        <br>
+                        <br>                       
+                        <input type="submit" id="submitButton" class="btn btn-lg btn-success btn-block" value="수정하기">     
+                        <br>                    
+                        <br>
+                        <!-- <a href="/accounts/withdraw/:id"><input type="button" id="withdrawButton" class="btn btn-lg btn-danger btn-block" value="회원탈퇴"></a> !-->
+                        <%}%>               
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>    
+
+<script type="text/javascript">
+(function(){
+    $(document).ready(function() {
+        $('#update_form').submit(function(){
+            var $displaynameInput = $('#update_form input[name=displayname]');
+            var $nowPasswordInput = $('#update_form input[name=now_password]');
+            var $newPasswordInput = $('#update_form input[name=new_password]');
+            var $newPasswordConfirmInput = $('#update_form input[name=new_password_confirm]');
+            var new_password = $('#new_password').val();
+            var password_regex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/; //비번 형식 체크               
+
+            if(!$displaynameInput.val()){
+                $("#msg_displayname").html("이름을 입력해주세요.").css("color", "red");
+                $displaynameInput.focus();
+                return false;
+            }
+
+            if($('#passwordCheck').val()!=='checked'){
+                alert('현재 패스워드를 체크해주세요.');
+                return false;
+            }
+
+            if(!$nowPasswordInput.val()){
+                $("#msg_password").html("현재 패스워드를 입력해주세요.").css("color","red");
+                $nowPasswordInput.focus();
+                return false;
+            }
+            
+
+            if(!$newPasswordInput.val()){
+                $("#msg_password2").html("새로운 패스워드를 입력해주세요.").css("color","red");
+                $newPasswordInput.focus();
+                return false;
+            }
+            
+
+            if(!$newPasswordConfirmInput.val()){
+                $("#msg_password3").html("확인 패스워드를 입력해주세요.").css("color", "red");
+                $newPasswordConfirmInput.focus();
+                return false;
+            }                 
+            
+            
+            if(password_regex.test(new_password) == false) {
+                $("#msg_password2").html("비밀번호는 8~15자리 영어와 숫자, 특수문자가 모두 포함되어야 합니다").css("color","red");
+                 $newPasswordInput.focus();
+                return false;
+            }
+
+
+            if($newPasswordInput.val() !== $newPasswordConfirmInput.val()){
+                $("#msg_password3").html("패스워드가 다릅니다.").css("color", "red");
+                return false;
+            }                    
+
+            // 검증완료시 action으로 넘어감
+               return true;    
+        }); 
+        
+        $('#now_password').blur(function() {
+        var $nowPasswordInput = $('#update_form input[name=now_password]');
+        var passwordValue = $(this).val();        
+
+            if($nowPasswordInput.val()){
+                $.ajax({
+                    url : '/accounts/checkPassword',
+                    type : 'POST',
+                    data :  {now_password : $('#now_password').val()},
+                    //ContentType: "application/json",
+                    success : function(data) {
+                        if(data == false){
+                            $("#msg_password").html("현재 패스워드가 아닙니다.").css("color","red");
+                            $('#passwordCheck').val('');
+                            return false;
+                        }else{
+                            $("#msg_password").html("현재 패스워드가 맞습니다.").css("color","blue");
+                            $('#passwordCheck').val('checked');
+                        }
+                    },
+                    error : function(error) {
+                        alert("에러 발생");
+                    }
+                });
+            }else{
+                $("#msg_password").html("현재 패스워드를 입력해주세요.").css("color","red");
+                    $('#passwordCheck').val('');
+                    return false;
+            }
+            
+        });
+    });
+})();
+</script>
+<% include ../footer.ejs %>

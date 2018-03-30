@@ -15,48 +15,32 @@
 		"title": "Login",
 		"inputId" : "ID",
 		"inputPassword" : "Password",
-		"idSaveCheck": "Remember Username",
+		"idSaveCheck": "Save this ID",
 		"loginButton" : "Login",
 		"joinButton": "Sign up",
-		"serchPassword": "Forgot password?",
+		"serchPassword": "Find password",
 		"inputMessge_1": "Please enter your ID.",
 		"inputMessge_2": "Please enter your password.",
-		"CheckMessage": "ID or the password you entered was incorrect.",
-		"notEmailCheckMessage" :"The User has not been authenticated by email.",
-		"sendEmailAgain" :"Click if you want to resend<br>the verification email.",
-		"dormancyMessage" : "Inactive member",
-		"release" : "Click if you want to release the dormant state"
-	},
-
-	"resendEmail" : {
-		"title" : "Resend the verification email",
-		"content" : "Email address has not been verified.<br>If you want to resend the verification email,<br>enter the same email address that you used to sign in.  If the email address does not match, retransmission is impossible.<br><br>",
-		"content2" : "If you do not authenticate to the retransmission email after a week,<br>the corresponding email address is not available to use.",
-		"resendBt" : "Resend the verification email",
-		"msg_userid" : "Enter your email address.",
-		"watingMessage" : "Email is being sent, Please wait.",
-		"sendSuccessMessage" : "<p>Mail has been resent to the user’s email address!<br>After confirm the email address, Please log in again!</p>",
-  		"notMatchEmail" :"Email address mismatch with the sign up account."
+		"CheckMessage": "ID or Password does not match the format."
 	},
 
 	"logoutMessage":"Are you sure you want to sign out?",
 
 	"join": {
-		"title": "Sign up",
-		"message" : "Enter your user ID with a verified email address.",
-		"inputId" : "Email",
+		"title": "",
+		"message" : "The user name must be an authenticable e-mail.",
+		"inputId" : "ID",
 		"inputNickName" : "NickName",
 		"inputPassword" : "Password",
-		"inputPasswordCheck" : "Confirm password.",
+		"inputPasswordCheck" : "Check password.",
 		"agreeMessage" : "I agree to the terms of service provided by PopcornSAR.",
 		"agreeView" : "View terms of use",
-		"emailMessage_1" : "Click 'Sign up' button.<br> The verification email is sent. Please check the email.<br><br>",
+		"emailMessage_1" : "Click 'sign up' button.<br> The verification email is sent. Please check the email.<br><br>",
 		"emailMessage_2" : "The verification email is only valid within 24 hours of sending.",
-		"SignUp" : "Sign up",
+		"SignUp" : "Join",
 		
 		"idCheckMessage_1" : "Please enter your ID",
 		"idCheckMessage_2" : "Confirm ID'",
-		"nickNameCheckMessage" : "Check your nickname.",
 		"passCheckMessage_1" : "Please enter your password",
 		"passCheckMessage_2" : "Confirm Password",
 		
@@ -67,49 +51,27 @@
 
 		"idCheckMessage_false" : "You are already a member",
 		"idCheckMessage_false_2" : "The email address does not match the format",
-		"idCheckMessage_true" : "A user with this nickname already exists.",
-
-		"failNickName" : "This nickname already exists.",
-		"successNicName" : "Available nickname"
+		"idCheckMessage_true" : "available"
 	},
 	
-	"joinSuccess" : {
-		"title" : "Thank you for joining us." ,
-		"content" : "Please check your email account to confirm your email address."
-	},
+	"joinSuccess" : "Thank you for joining.<br> The verification email is sent. Please check the email." ,
 
 	"joinCompleted" : "Thank you for joining the PopcornSAR" ,
 	
 	"findPassword" :{
 		"title" : "Reset password",
-		"message" : "Once authentication is completed, a temporary password will be issue by email.",
+		"message" : "A temporary password wil be issued once authentication is completed with the sent mail.",
 		"inputMessage" : "Please enter the email address you used when you signed up.",
 		"sendButton" : "Reset",
 		"emailAlertMessage" : "Please enter your email",
-		"loadingMessage" : "Please wait for the email.", 
-		"doneMessage" : "<p>A verification email has been sent to your email. Please change your password after you login.</p>",
-		"idCheckMessage" : "Email ID do not match.",
-		"subject" : "PopcornSAR - Temporary password.",
-		"html" :  "A temporary password has been issued.<br> Please make sure to change your temporary password after login.  ..<br><br> temporary password :"
+		"loadingMessage" : "Sending email. Plese wait.", 
+		"doneMessage" : "<p>A verification email has been sent to your email.Be sure to change your password after login.</p>",
+		"idCheckMessage" : "Email ID do not match."
 	},
 
 	"toolide": {
-		"title": "WORKSPACE",
-		"title2" : "LIST",
-		"subTitle" : "CREATE WORKSPACE",
-		"subtitle2" : "WORKSPACE LIST",
-		"createWorkspace" : "Creating a workspace",
-		"demoverMessage" : "<p>Demo version can create<br><b>up to 1</b>workspace</p>",
-		"workspaceName" : "Workspace",
-		"run" : "Run",
-		"remove" : "Remove",
-		"confirmRemove" : "Are you sure you want to delete ?",
-		"failRemove" : "Failed to delete workspace! please try again.",
-		"successRemove" : "You have been successfully removed.",
-		"failCreateWorkspace" : "Failed to create workspace! please try agian.",
-		"successCreate" : "Creation completed.",
-
-		"loading" : "Loading"
+		"title": "tooldie",
+		"content" : "Workspace page."
 	},
 
 	"myPage_sideBar": {
@@ -120,7 +82,7 @@
 
 	"memberInfomation" :{
 		"title" : "Edit membership Information",
-		"name" : "Name",
+		"name" : "name",
 		"id" : "ID",
 		"currentPassword" : "Current Password",
 		"newPassword" : "Reset password",
@@ -141,9 +103,9 @@
 	},
 	
 	"admin_sideBar" : {
-		"menu" : "ADMIN PAGE",
-		"allUserView" :"Members",
-		"adminView" :"Administrator"
+		"menu" : "menu",
+		"allUserView" :"View all members",
+		"adminView" :"View administrator"
 	},
 
 	"allUserView" :{
@@ -152,7 +114,6 @@
 		"addUser_Bt" : "Add member",
 		"csv_Bt" : "Download as .csv file",
 		"excel_Bt" : "Add the member in excel",
-		"addAdmin_Bt" :"Add administrator authority.",
 
 		"belong_table" : "Belong",
 		"id_table" : "ID",
@@ -191,12 +152,6 @@
 		"emailCheck_Alert_1" : "The email address already exists.",
 		"emailCheck_Alert_2" : "The email address does not match the format.",
 		"emailCheck_true" : "Available",
-
-		"notChoiceUser" : "No members selected!",
-		"sendEddAdmin" : "Would you like to send an email to the administrator for permission?",
-		"sendAdminMail" : "Success in granting administrator authority to mail!",
-		"failAdminMail" :"Failure in administrator authorization mail transfer!",
-		"choiceAlert" : "Please select only one member!",
 
 		"idCheck_Alert_1" : "Please enter your ID.",
 		"idCheck_Alert_2" : "Please check your ID.",
@@ -249,24 +204,8 @@
 		"idePowerMessage" : "Do you want to grant IDE permissions to members?",
 		"idePower_true" : "Permission granted.",
 		"ideCancleMessage" : "Are you sure you want to revoke this member's IDE privilege?",
-		"idePower_false" : "Cancellation authority..",
+		"idePower_false" : "Cancellation authority.."
 		
-		"class" : "Classification",
-		"admin_1" : "First manager",
-		"admin_2" : "Second manager",
-		"cancleAdmin" : "Disable administrator permissions",
-		"askCancle" : "Are you sure you want to revoke a member's manager rights?",
-		"successAdmin" : "Permission revoked."
-	},
-
-	"toolideAccess" : {
-		"toolideAccessFailAlarm1" : "Administrator approval is required to access Workspace page.",
-		"toolideAccessFailAlarm2" : "Contact Our administrator."
-	},
-
-	"footer" : {
-		"copyright" : "Copyright (c) 2014 POPCORNSAR Co.,Ltd. All rights reserved.",
-		"address" : "PopcornSAR | 8th KAIT Tower, Teheran-ro 306, Gangnam-gu, Seoul, Korea | contact@popcornsar.com | TEL : +82-2-2188-3068 <br>| FAX : +82-2-2188-3055"
 	}
 
 }

@@ -1,0 +1,46 @@
+<% include ../header.ejs %>
+
+<div id="pricing" class="container-fluid">
+    <h2>포인트로 결제</h2>
+        <span>
+        <span>01 상품리스트</span>&nbsp;>&nbsp;
+        <span style="color:blue;">02 포인트로 결제&nbsp;>&nbsp;</span>
+        03 상품구매 완료
+        </span>
+    <hr/><br/>
+
+    <h3><b>현재 보유중인 포인트 &nbsp; "<%=totalmoney%>"</b>point</h3>
+    <h3 style="color:red;">포인트가 부족하여 결제가 불가능합니다.</b></h3>
+    <br/><br/>
+
+    <h3 style="color:blue;">차감포인트 : <%=productData.price%> point</h3>
+    <br/><br/>
+
+    <!-- 상품구매 table -->
+    <h4><b>상품구매 정보</b></h4>
+    <table class="table table-striped">
+        <thead style="background-color:#eff1f6; color:#666666;">
+        <tr>
+            <th>구매상품 이름</th>
+            <th>Options</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><%=productData.ItemName%></td>
+            <td>
+                <% productData.options.forEach(function oplist(value){ %>
+                   <%=value%> <br/>
+                <% }); %>
+            </td>
+        </tr>
+        </tbody>
+    </table><br/>
+
+    <div style="text-align:center;">
+        <h2><a href="/pay/pricelist" class="btn btn-primary btn-lg" >사이버머니 구매하러가기.</a></h2><br/>
+
+    </div>
+</div>
+
+<% include ../footer.ejs %>

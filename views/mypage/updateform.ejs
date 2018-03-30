@@ -1,85 +1,20 @@
 <% include ../header.ejs %>
-
-<!-- <section id="my" class="bg-on navbar-fixed-top">
-</section> -->
-
 <% include ./sidebar.ejs %>
-<div class="container" id="mypage">
-    <div class="form-wrap">
-        <form role="form" action="" id="update_form" method="post">
-            <fieldset> 
-                <div class="required-info-group">
-                <!--<%if (user.userid.indexOf("fb_")==0 || user.userid.indexOf("g_")==0 || user.userid.indexOf("git_")==0) {%>                                              
-                        <div>
-                        계정 회원가입하셨으므로 정보 변경을 원하시면 해당 홈페이지에서 변경하셔야 합니다.
-                        </div>
-                    <%} else {%>-->
-                    <div class="row">
-                        <div class="col-xs-5 row-title required-title input-title"><p><%= language.memberInfomation.name%></p></div>
-                        <div class="col-xs-7">
-                            <input type="text" class="form-control" value="<%=user.displayname %>"placeholder="<%= language.memberInfomation.name%>" name="displayname" data-toggle="popover" data-placement="bottom" readonly>
-                            <span id="msg_displayname"></span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-5 row-title required-title input-title"><p><%= language.memberInfomation.id%></p></div>
-                        <div class="col-xs-7">
-                            <input type="email" class="form-control" value="<%=user.userid %>" name="userid" id="userid" autofocus=""  readonly data-toggle="popover" data-placement="bottom">
-                            <span id="msg_userid"></span><input type="hidden" id="useridCheck" value="">
-                        </div>
-                    </div>
-                    <div class="row">
-                            <div class="col-xs-5 row-title required-title input-title"><p><%= language.memberInfomation.currentPassword%></p></div>
-                            <div class="col-xs-7">
-                                <input type="password" class="form-control" value="" name="now_password" id="now_password"  data-toggle="popover" data-placement="bottom">
-                                <span id="msg_password"></span><input type="hidden" id="passwordCheck" value="">
-                            </div>
-                        </div>
-                    <div class="row">
-                            <div class="col-xs-5 row-title required-title input-title"><p><%= language.memberInfomation.newPassword%></p></div>
-                            <div class="col-xs-7">
-                                <input type="password" class="form-control" value="" name="new_password" id="new_password" data-toggle="popover" data-placement="bottom">
-                                <span id="msg_password2"></span>
-                            </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-xs-5 row-title required-title input-title"><p><%= language.memberInfomation.checkNewPassword%></p></div>
-                        <div class="col-xs-7">
-                            <input type="password" class="form-control" value="" name="new_password_confirm" id="new_password_confirm" data-toggle="popover" data-placement="bottom">
-                            <span id="msg_password3"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="button-group">
-                    <input type="submit" id="submitButton" class="btn btn-lg btn-success btn-block" value="<%= language.memberInfomation.modify_Bt%>"> 
-                    <!-- <a href="/accounts/withdraw/:id"><input type="button" id="withdrawButton" class="btn btn-lg btn-danger btn-block" value="회원탈퇴"></a> 
-                        <%}%>    !-->
-                </div>
-            </fieldset>
-        </form>
-    </div>
-    
-
-
-
-
-    <!-- <div class="row">
+<div class="row">
+    <div class="col-md-4 col-md-offset-4">
         <div class="login-panel panel panel-default">
             <div class="panel-heading">
-                <div class="logo">
-                        <img src="/public/img/login-logo.png">
-                </div>
                 <h3 class="panel-title"><%= language.memberInfomation.title%></h3>
             </div>
             <div class="panel-body">
                 <form role="form" action="" id="update_form" method="post">
-                    <fieldset>                         -->
+                    <fieldset>                        
                         <!--<%if (user.userid.indexOf("fb_")==0 || user.userid.indexOf("g_")==0 || user.userid.indexOf("git_")==0) {%>                                              
                             <div>
                             계정 회원가입하셨으므로 정보 변경을 원하시면 해당 홈페이지에서 변경하셔야 합니다.
                             </div>
                         <%} else {%>-->
-                        <!-- <div class="form-group"> <%= language.memberInfomation.name%>
+                        <div class="form-group"> <%= language.memberInfomation.name%>
                             <input class="form-control" value="<%=user.displayname %>"placeholder="<%= language.memberInfomation.name%>" name="displayname" type="text" >
                             <span id="msg_displayname"></span>
                         </div>
@@ -104,16 +39,15 @@
                         <br>                       
                         <input type="submit" id="submitButton" class="btn btn-lg btn-success btn-block" value="<%= language.memberInfomation.modify_Bt%>">     
                         <br>                    
-                        <br> -->
+                        <br>
                         <!-- <a href="/accounts/withdraw/:id"><input type="button" id="withdrawButton" class="btn btn-lg btn-danger btn-block" value="회원탈퇴"></a> !-->
-                       <!--  <%}%>               
+                        <%}%>               
                     </fieldset>
                 </form>
             </div>
         </div>
-    </div> -->
+    </div>
 </div>    
-
 
 <script type="text/javascript">
 (function(){

@@ -1,0 +1,107 @@
+<% include ../header.ejs %>
+
+ 
+<div id="pricing" class="container-fluid">
+  <h2>사이버머니 결제</h2>
+      
+      <span style="color:blue;">01 가격정책</span>&nbsp;>&nbsp;
+      <span>02 결제&nbsp;>&nbsp;</span>
+      <span>03 결제완료</span>
+      
+  <hr/><br/>
+
+  <div class="text-center">
+    <h2>사이버머니 가격정책</h2><br/>
+    <h4> </h4>
+  </div>
+
+  <div class="row slideanim">
+    <form role="form" action="/pay/paydata" id="pay_form" method="post" >
+        <div class="col-sm-4 col-xs-12">
+            <div class="panel" style="text-align:center; background-color:#1e5b99; color:white;" >
+                <h3>1$ = 1000 Point</h3>
+                <div class="radio">
+                    <label><input type="radio" name="optradio" value="1"> 1$ </label>
+                </div>
+            </div>    
+        </div>
+
+        <div class="col-sm-4 col-xs-12">
+            <div class="panel" style="text-align:center; background-color:#1e5b99; color:white;" >
+                <h3>2$ = 2000 Point</h3>
+                <div class="radio">
+                    <label><input type="radio" name="optradio" value="2"> 2$ </label>
+                </div>
+            </div>    
+        </div>     
+
+        <div class="col-sm-4 col-xs-12">
+            <div class="panel" style="text-align:center; background-color:#1e5b99; color:white;" >
+                <h3>3$ = 3000 Point</h3>
+                <div class="radio">
+                    <label><input type="radio" name="optradio" value="3"> 3$ </label>
+                </div>
+            </div>    
+        </div>     
+
+        <div class="col-sm-4 col-xs-12">
+            <div class="panel" style="text-align:center; background-color:#1e5b99; color:white;" >
+                <h3>4$ = 4000 Point</h3>
+                <div class="radio">
+                    <label><input type="radio" name="optradio" value="4"> 4$ </label>
+                </div>
+            </div>    
+        </div>     
+
+        <div class="col-sm-4 col-xs-12">
+            <div class="panel" style="text-align:center; background-color:#1e5b99; color:white;" >
+                <h3>5$ = 5000 Point</h3>
+                <div class="radio">
+                    <label><input type="radio" name="optradio" value="5"> 5$ </label>
+                </div>
+            </div>    
+        </div>     
+
+        <div class="col-sm-4 col-xs-12">
+            <div class="panel" style="text-align:center; background-color:#1e5b99; color:white;" >
+                <h3>6$ = 6000 Point</h3>
+                <div class="radio">
+                    <label><input type="radio" name="optradio" value="6"> 6$ </label>
+                </div>
+            </div>    
+        </div>
+
+        <br>
+            <input type="submit"  class="btn btn-lg btn-success btn-block" value="선택한 사이버머니 구매하기">   
+        <br>
+    </form>
+</div> 
+
+
+<!--기업견적문의-->
+  <div class="row">
+    <div class="col-md-12 col-xs-12">
+      <div class="panel panel-default text-center">
+        <div class="panel-heading">
+          <h1>Enterprise</h1>
+        </div>
+        <div class="panel-body">
+          <p><strong>1</strong> 높은 계산 능력 및 저장을위한 사용자 지정 워크로드 패키지.</p>
+          <p><strong>2</strong> 사설 클라우드 설치 및 관리</p>
+          <p><strong>3</strong> 교육 프로그램</p>
+          <p><strong>4</strong> 사용자 정의 설계 플랫폼, 보안 프로토콜 및 API</p>
+          <p><strong>5</strong> IDE 용 상용 라이센스</p>
+        </div>
+        <div class="panel-footer">
+          <!-- <h3>50,000원</h3>
+          <h4>per month</h4> -->
+          <button class="btn btn-primary" id="companyQuoteBtn" onclick="location.href='/pay/quote'" >견적받기</button>
+        </div>
+      </div>      
+    </div>   
+  </div>
+</div>
+
+
+
+<% include ../footer.ejs %>
