@@ -1,0 +1,153 @@
+{
+  "AWSTemplateFormatVersion" : "2010-09-09",
+
+  "Description" : "Create user's own workspace for IDE.",
+
+  "Parameters" : {
+    "KeyPairName" : {
+      "Type" : "AWS::EC2::KeyPair::KeyName",
+      "Default" : "testkeypair"
+    },
+    "Ec2AmiImageId" : {
+      "Type" : "AWS::EC2::Image::Id",
+      "Default" : "ami-f64bed98"
+    },
+    "Ec2InstanceType" : {
+      "Type" : "String",
+      "Default" : "t2.micro"
+    },
+    "Ec2SG" : {
+      "Type" : "AWS::EC2::SecurityGroup::Id",
+      "Default" : "sg-7130871a"
+    },
+    "PrivateSubnetId" : {
+      "Description" : "Private subnet for ide instance, ap-northeast-2a",
+      "Type" : "AWS::EC2::Subnet::Id",
+      "Default" : "subnet-1fa83d77 "
+    },
+    "PrivateSubnetId2" : {
+      "Description" : "Private subnet for ide instance, ap-northeast-2c",
+      "Type" : "AWS::EC2::Subnet::Id",
+      "Default" : "subnet-13c4015f"
+    },
+    "ElbSG" : {
+      "Type" : "AWS::EC2::SecurityGroup::Id",
+      "Default" : "sg-3d00be56"
+    },
+    "VpcId" : {
+      "Type" : "String",
+      "Default" : "vpc-1ee94576"
+    },
+    "Ec2TagNameValue" : {
+      "Type" : "String",
+      "Default" : ""
+    },
+    "ElbName" : {
+      "Type" : "String",
+      "Default" : ""
+    },
+    "ElbTagNameValue" : {
+      "Type" : "String",
+      "Default" : ""
+    },
+    "ElbTargetGroupName" : {
+      "Type" : "String",
+      "Default" : ""
+    }
+  },
+
+  "Resources" : {
+    "Ec2Instance" : {
+      "Type" : "AWS::EC2::Instance",
+      "Properties" : {
+          "KeyName" : {"Ref" : "KeyPairName"},
+          "ImageId" : {"Ref" : "Ec2AmiImageId"},
+          "InstanceType" : {"Ref" : "Ec2InstanceType"},
+          "UserData" : 
+          {
+            "Fn::Base64" : { "Fn::Join" : ["",[
+              "#!/bin/bash\n",
+              "#cloud-config \n",
+                "packages: - docker \n",
+                "runcmd : - [ sh, -c, usermod -aG docker ec2-user] \n",
+                "service docker start \n",
+                "docker start ide"
+              ]]}
+          },
+          "NetworkInterfaces" : [{
+            "AssociatePublicIpAddress" : "false",
+            "DeviceIndex" : "0",
+            "SubnetId" : {"Ref" : "PrivateSubnetId"},
+            "GroupSet" : [{"Ref" : "Ec2SG"}]
+          }],
+          "Tags" : [ {"Key" : "Name", "Value" : {"Ref" : "Ec2TagNameValue"}} ]
+      }
+    },
+
+
+    "ALBListener" : {
+      "Type" : "AWS::ElasticLoadBalancingV2::Listener",
+      "DependsOn" : "ApplicationLoadBalancer",
+      "Properties" : {
+        "DefaultActions" : [{
+          "Type" : "forward",
+          "TargetGroupArn" : { "Ref" : "ALBTargetGroup" }
+        }],
+        "LoadBalancerArn" : { "Ref" : "ApplicationLoadBalancer" },
+        "Port" : "80",
+        "Protocol" : "HTTP"
+      }
+    },
+    "ApplicationLoadBalancer" : {
+        "Type" : "AWS::ElasticLoadBalancingV2::LoadBalancer",
+        "Properties" : {
+            "Name" : { "Ref" : "ElbName" },
+            "Tags" : [ {"Key" : "Name", "Value" : { "Ref" : "ElbTagNameValue" }} ],
+            "SecurityGroups" : [{"Ref" : "ElbSG"}],
+            "Subnets" : [{"Ref" : "PrivateSubnetId"}, {"Ref" : "PrivateSubnetId2"}],
+            "LoadBalancerAttributes" : [
+              { "Key" : "idle_timeout.timeout_seconds", "Value" : "60" }
+            ],
+            "Scheme" : "internet-facing"
+        }
+    },
+    "ALBTargetGroup" : {
+        "Type" : "AWS::ElasticLoadBalancingV2::TargetGroup",    
+        "DependsOn" : "ApplicationLoadBalancer",   
+        "Properties" : {
+        "HealthCheckIntervalSeconds" : 60,
+        "UnhealthyThresholdCount" : 10,
+        "HealthCheckPath" : "/",
+        "Name" : { "Ref" : "ElbTargetGroupName" },
+        "Port" : 80,
+        "Protocol" : "HTTP",
+        "VpcId" : {"Ref" : "VpcId"},
+        "TargetType" : "instance",
+        "Targets" : [{
+          "Id" : {"Ref" : "Ec2Instance"}
+        }]
+      }
+    }
+  },
+
+  "Outputs" : {
+      "InstanceId" : {
+          "Description" : "The InstanceId of the newly created EC2 instance",
+          "Value" : {
+              "Ref" : "Ec2Instance"
+          }
+      },
+      "InstancePrivateIp" : {
+        "Description" : "EC2 instance's privateIp",
+        "Value" : {"Fn::GetAtt": [ "Ec2Instance", "PrivateIp"]}
+      },
+      "ELBName" : {
+        "Description" : "ELB's name",
+        "Value" : { "Fn::GetAtt" : [ "ApplicationLoadBalancer", "LoadBalancerName" ]}
+      },
+      "ELBURL" : {
+        "Description" : "URL of the website",
+        "Value" :  { "Fn::Join" : [ "", [ "http://", { "Fn::GetAtt" : [ "ApplicationLoadBalancer", "DNSName" ]}]]}
+      }
+  } 
+}

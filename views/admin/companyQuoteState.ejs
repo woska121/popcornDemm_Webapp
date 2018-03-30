@@ -1,0 +1,130 @@
+<% include ../header.ejs %>
+    <% include ./sidebar.ejs %>        
+    <div class="col-sm-10">
+        <table class="table table-bordered table-hover">
+            <h3><p class="text-center">기업견적문의 현황</p></h3>
+            <br>
+            <tr>
+                <th>번호</th>
+                <th>문의날짜</th>
+                <th>회사명</th>
+                <th>작성자</th>
+                <th>전화번호</th>
+                <th>견적문의내용</th>
+                <th>이메일</th>
+                <th>답변 메일</th>
+                <th>답변 여부</th>
+            </tr>            
+            <tr>
+            <% companyQuoteList.forEach(function(quote) { %>
+                <td><%=quote.id%></td>
+                <td> 
+                    <%=quote.getDate.year%> -
+                    <%=quote.getDate.month%> - 
+                    <%=quote.getDate.day%>
+                </td>
+                <td><%=quote.company_name%> </td>
+                <td><%=quote.writer%> </td>
+                <td><%=quote.tel%></td>
+                <td><%=quote.quote_content%></td>
+                <td><%=quote.email%></td>
+                <td><a href="#" data-toggle="modal"  class="btn" onclick="showModal('<%=quote._id%>');" >보내기</a>    
+                </td>
+                <td>
+                    <% if(quote.answer_or_not==false) { %>
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    <%} else {%>
+                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                    <%}%>
+                </td>                
+            </tr>            
+            <%})%>
+        </table>
+
+        <div class="paging">
+            <%if(curSet > 1){%> 
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true" onclick="location.href='/admin/companyQuoteState?page=<%=startPage-1%>'"></span>
+            <%}%>            
+            <%for(var i = startPage; i <= endPage; i++){%>
+                <%if(i > totalPage) {%>                  
+                <%} else {%> 
+                <a href="/admin/companyQuoteState?page=<%=i%>"><%=i%></a>
+                <%}%>
+            <%}%>            
+            <%if(curSet < totalSet){%>
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true" onclick="location.href='/admin/companyQuoteState?page=<%=endPage+1%>'"></span>
+            <%}%>  
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">            
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">답변 메일 보내기</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" action="" id="answer_form" method="post" >            
+                    <input type= "hidden" class="form-control" id="quote_objid" name="quote_objid"  >
+                    <input class="form-control" id="quote_answer_to" name="quote_answer_to" required>                   
+                    <br>
+                    <input class="form-control" id="quote_answer_title" name="quote_answer_title" placeholder="제목을 입력하세요." required>
+                    <br>
+                    <textarea class="form-control" id="quote_answer_content" name="quote_answer_content" placeholder="답변내용을 입력하세요." rows="5" required></textarea><br>                    
+                    <br>
+                    <input type="submit"  class="btn btn-lg btn-success btn-block" value="전송">   
+                    <span id="message"></span>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+             </div>
+        </div>
+    </div> 
+
+<script type="text/javascript">
+    (function(){   
+        $(document).ready(function() {             
+            $('#answer_form').submit(function(){
+                var from, to, subject, text;                
+                var to = $("#quote_answer_to").val();
+                var title = $("#quote_answer_title").val();
+                var content = $("#quote_answer_content").val();
+                // 답변 이메일 전송 후 submit
+                $("#message").text("Sending E-mail...Please wait");
+                $.get("http://localhost:3000/admin/companyQuoteAnswerMail",{to:to, title:title, content:content},function(data){
+                    if(data=="sent"){
+                    $("#message").empty().html("<p>답변이메일이 전송되었습니다!</p>");
+                        return true;
+                    }
+                });
+            });   
+        
+            
+        });
+    })();
+  
+    function showModal(quoteObjId) {             
+        $.ajax({
+            url : '/admin/findModal/'+quoteObjId.trim(),
+            type : 'GET'
+        })
+        .done(function(args) {               
+            var quoteObid = args.result._id;
+            var quoteEmail = args.result.email;
+            $("#myModal").modal('show') 
+            $("#myModal").on('shown.bs.modal', function (e) {                    
+                $(".modal-dialog #quote_objid").val(quoteObid);
+                $(".modal-dialog #quote_answer_to").val(quoteEmail);
+            });
+        })
+        .fail(function(args) {
+            console.log(args);
+        });         
+    }
+
+</script>   
+<% include ../footer.ejs %>

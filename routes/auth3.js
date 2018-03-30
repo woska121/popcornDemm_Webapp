@@ -26,7 +26,8 @@ passport.use(new GitHubStrategy({
                 var regData = { //DB에 등록 및 세션에 등록될 데이터
                     userid :  "git_" + profile.id,
                     password : "github_login",
-                    displayname : profile.displayName
+                    displayname : profile.displayName,
+                    email_verification_state : true
                 };
                 var User = new UserModel(regData);
                 User.save(function(err){ //DB저장

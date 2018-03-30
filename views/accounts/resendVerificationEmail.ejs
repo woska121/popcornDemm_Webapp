@@ -1,0 +1,83 @@
+<% include ../header.ejs %>
+<section id="resendEmail" class="bg-on navbar-fixed-top">
+</section>
+
+<div class="container" id="resendEmail_page">
+    <div class="login-panel panel test">
+        <div class="test-heading">
+            <div class="logo">
+                <img src="/public/img/login-logo.png">
+            </div>
+            <h3 class="panel-title"><%= language.resendEmail.title%></h3>
+        </div>
+        <div class="panel-body">
+                <form role="form" action="" id="resend_form" method="post">
+                <fieldset>
+                    <div class="form-group">
+                        <div class="icon"><i class="fa fa-envelope-open fa-lg"></i></div>
+                        <input class="form-control" placeholder="Email" name="userid" id="userid" type="email" autofocus=""  >
+                        <span id="msg_userid"></span>
+                        <input type="hidden" id="hidden_userid" value="<%=userid%>">
+                    </div>
+                    <span id="content"></span>                         
+                    <b><span id="content2"></span></b><br><br>
+                    <input type="button" id="resend" class="btn btn-lg btn-default btn-block" value="<%= language.resendEmail.resendBt%>"><br>
+                    <span id="message"></span><br>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>    
+
+
+
+<script type="text/javascript">
+(function(){   
+    $(document).ready(function() {
+
+        // 다국어 <> 치환
+        var content= "<%= language.resendEmail.content%>";
+        var content2= "<%= language.resendEmail.content2%>";
+        var str_content = content.replace(/&lt;/g, '<').replace(/&gt;/g, '>') ;
+        var str_content2 = content2.replace(/&lt;/g, '<').replace(/&gt;/g, '>') ;
+        $("#content").html(str_content);
+        $("#content2").html(str_content2);
+
+
+
+        $('#resend').click(function(){
+            var $useridInput = $('#resend_form input[name=userid]');
+            var hidden_userid = $('#hidden_userid').val(); // 로그인 시 입력한 이메일 session 값
+            var userid = $('#userid').val();
+            var from, to, subject, text;                
+
+            if(!$useridInput.val()){
+                $("#msg_userid").html("<%= language.resendEmail.msg_userid%>").css("color","red");
+                $useridInput.focus();
+                return false;
+            }    
+
+            if(hidden_userid == userid){
+                to = userid;    
+                $("#message").text("<%= language.resendEmail.watingMessage%>");
+		        $.get("/accounts/send",{to:to},function(data){
+                    if(data=="sent"){
+                        var value= "<%= language.resendEmail.sendSuccessMessage%>";
+                        var str = value.replace(/&lt;/g, '<').replace(/&gt;/g, '>') ;
+                        $("#message").empty().html(str);
+                        console.log("인증 메일 전송 성공!");
+                    }
+		        });
+            }else{
+                $("#msg_userid").html("<%= language.resendEmail.notMatchEmail%>").css("color","red");
+                $useridInput.focus();
+                return false;
+            }            
+            // 검증완료시 action으로 넘어감
+            return true;
+        });                  
+    });
+})();
+
+</script>
+<% include ../footer.ejs %>

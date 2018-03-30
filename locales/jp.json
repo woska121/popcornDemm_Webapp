@@ -1,5 +1,272 @@
 {
-    "Errormessage" : "페이지를 찾을 수 없습니다.",
-    "hello": "안녕하세요.",
-    "helloWithHTML": "안녕하세요2."
+	"header" : {
+        "title": "ポップコーンザー",
+        "join": "新規登録",
+		"login": "ログイン",
+		"logout": "ログアウト",
+		"mypage": "マイページ",
+		"toolide": "ツールide",
+		"language" : "言語",
+		"en" : "英語",
+		"jp" : "日本語"
+    },
+    
+	"login": {
+		"title": "ログイン",
+		"inputId" : "ユーザーID",
+		"inputPassword" : "パスワード",
+		"idSaveCheck": "ID情報を保持する",
+		"loginButton" : "ログイン",
+		"joinButton": "新規登録",
+		"serchPassword": "パスワードを<br>忘れた方",
+		"inputMessge_1": "IDを入力してください。",
+		"inputMessge_2": "パスワードを入力してください。",
+		"CheckMessage": "入力内容が正しくありません。.",
+		"notEmailCheckMessage" :"メールアドレスが承認されていないユーザーです。",
+		"sendEmailAgain" :"認証メール再送信",
+		"dormancyMessage" : "休眠ユーザーです。",
+		"release" : "休眠状態を解除します。"
+	},
+
+	"resendEmail" : {
+		"title" : "認証メール再送信",
+		"content" : "メールアドレスが承認されてないです。<br>改めてメールアドレスを入力すると<br>認証メールが再送信されます。<br>メールアドレスが一致しない場合は<br>再送信されません。<br><br>",
+		"content2" : "認証メールの有効期限は再送信から<br>7日以内となります。",
+		"resendBt" : "認証メール再送信",
+		"msg_userid" : "メールアドレスを入力してください。",
+		"watingMessage" : "メール送信中です。しばらくお待ちください。",
+		"sendSuccessMessage" : "<p>ユーザーのメールアドレスへ再送信されました。<br>届いたメールを認証した後、ログインしてください。</p>",
+		"notMatchEmail" :"一致するメールアドレスがありません。"
+	 },
+	
+	"logoutMessage":"本当にログアウトしますか。",
+
+	"join": {
+		"title": "新規登録",
+		"message" : "ユーザーIDはメールアドレスのみ<br>ご登録いただけます。",
+		"inputId" : "ユーザーID",
+		"inputNickName" : "ニックネーム",
+		"inputPassword" : "パスワード",
+		"inputPasswordCheck" : "パスワード再確認",
+		"agreeMessage" : "利用規約に同意する。",
+		"agreeView" : "利用規約",
+		"emailMessage_1" : "下記のサインアップをクリックすると<br>ご登録いただいたメールアドレスへ<br>認証メールが送信されます。<br> メール認証を完了するとログインできます。<br><br>",
+		"emailMessage_2" : "24時間以内にメール認証が完了されない<br>場合は新規登録できません。",
+		"SignUp" : "新規登録",
+		
+		"idCheckMessage_1" : "ユーザーIDを入力してください。",
+		"idCheckMessage_2" : "ユーザーID再確認'",
+		"nickNameCheckMessage" : "ニックネームをチェックしてください。",
+		"passCheckMessage_1" : "パスワードを入力してください。",
+		"passCheckMessage_2" : "パスワード再確認",
+		
+		"passwordCheckMessage_1" : "パスワードは8~15「英数字」「記号」を<br>使用してください。",
+		"passwordCheckMessage_2" : "入力内容が正しくありません。",
+		"nameChceckMessage" : "お名前を入力してください。",
+		"agreeCheckMessage" : "利用規約に同意する。.",
+
+		"idCheckMessage_false" : "すでに登録されているメールアドレスです。",
+		"idCheckMessage_false_2" : "メールアドレスの形式が正しくありません。",
+		"idCheckMessage_true" : "ご登録可能です。",
+
+		"failNickName" : "すでに登録されているニックネームです。",
+		"successNicName" : "使用可能なニックネームです。"
+	},
+	
+	"joinSuccess" : {
+		"title" : "登録が完了しました" ,
+		"content" : "メールアドレス認証へお進みください。"
+	},
+
+	"joinCompleted" : "認証が完了しました。" ,
+	
+	"findPassword" :{
+		"title" : "パスワードを忘れた方",
+		"message" : "登録したメールアドレスへ<br>仮パスワードを送信します。",
+		"inputMessage" : "登録したメールアドレスを入力してください。",
+		"sendButton" : "仮パスワードを発行",
+		"emailAlertMessage" : "メールアドレスを入力してください。",
+		"loadingMessage" : "メールを送信中です。少々お待ちください。", 
+		"doneMessage" : "<p>メールが送信されました。ログインし後、パスワードを変更してください。</p>",
+		"idCheckMessage" : "一致するメールアドレスはありません。",
+		"subject" : "仮パスワードです。",
+		"html" :  "下記のように仮パスワードを発行しました。<br>ログイン後、必ずパスワードを変更してください。<br><br> 仮パスワード :"
+	},
+
+	"toolide": {
+		"title": "ワークスペース",
+		"title2" : "リスト",
+		"subTitle" : "新しいワークスペース",
+		"subtitle2" : "ワークスペースのリスト",
+		"createWorkspace" : "新しいワークスペース",
+		"demoverMessage" : "<p>デモ版ではワークスペースを<br><b>最大１個まで</b>作られます。</p>",
+		"workspaceName" : "ワークスペース",
+		"run" : "実行",
+		"remove" : "削除",
+		"confirmRemove" : "を削除しますか。",
+		"failRemove" : "削除に失敗しました。もう一度やり直してください。",
+		"successRemove" : "削除しました。",
+		"failCreateWorkspace" : "ワークスペース作成に失敗しました。もう一度やり直してください。",
+		"successCreate" : "作成しました。",
+
+		"loading" : "ロード中"
+	},
+
+	"myPage_sideBar": {
+		"title": "マイページ",
+		"menu" : "メニュー",
+		"memberInfomation" : "登録情報の変更"
+	},
+
+	"memberInfomation" :{
+		"title" : "登録情報の変更",
+		"name" : "名前",
+		"id" : "ユーザーID",
+		"currentPassword" : "現在のパスワード",
+		"newPassword" : "新しいパスワード",
+		"checkNewPassword" : "パスワード再確認",
+		"modify_Bt" : "変更する。",
+
+		"nameAlertMessage" : "お名前を入力してください。",
+		"currentPassword_Check_Message" : "現在のパスワードを入力してください。",
+		"currentPassword_Alert_Message" :"現在のパスワードを入力してください。",
+		"newPassword_Alert_Message" : "新しいパスワードを入力してください。",
+		"confirmPasswodr_Alert_Message" :"パスワードを確認してください。",
+		"passwordCheckMessgae" :"パスワードは8~15「英数字」「記号」を使用してください。",
+		"password_false" : "入力内容が正しくありません。",
+
+		"currentPassword_false_Message_2" :"現在のパスワードと違います。",
+		"currentPassword_true_Message" :"現在のパスワードと一致します。",
+		"modify_SuccessMessage" : "登録情報を変更しました。"
+	},
+	
+	"admin_sideBar" : {
+		"menu" : "menu",
+		"allUserView" :"会員管理",
+		"adminView" :"管理ビュー"
+	},
+
+	"allUserView" :{
+		"title" : "会員検索",
+		"eamilSend_Bt" : "メール送信",
+		"addUser_Bt" : "会員追加",
+		"csv_Bt" : ".csvファイルのダウンロード",
+		"excel_Bt" : "会員 エクセル インポート 追加",
+		"addAdmin_Bt" :"管理者権限を追加する。",
+
+		"belong_table" : "所属",
+		"id_table" : "ユーザーID",
+		"nickName_table" : "ニックネーム",
+		"joinDate_table" : "加入日",
+		"emailStatus_table" : "メールアドレス認証取得可否",
+		"idePower_table" : "IDE権限",
+		"ideStatus_table" : "IDE権限の付与/取消し",
+		"certified_table" : "認証",
+		"unCertified_table" : "未認証",
+		"available_table" : "使用可能",
+		"unAvailable_table" : "使用不可能",
+
+		"ideAssign_Bt" : "IDE権限の付与",
+		"ideCancle_Bt" : "IDE権限の取消し",
+
+		"MailModal" : "メール送信",
+		"MailModal_title" : "タイトルを入力してください。",
+		"MailModal_content" : "内容を入力してください。",
+		"MailModal__Bt" : "送信",
+		
+		"addUserModal" : "会員追加",
+		"addUserModal_id" : "ユーザーID",
+		"addUserModal_name" : "名前",
+		"addUserModal_password" : "パスワード",
+		"addUserModal_company" : "社名",
+		"addUserModal_Message" : "企業の場合は社名を記入してください。",
+		
+		"excelModal" : "会員 エクセル インポート",
+		"excelModal_Message" : "拡張子は .csv のみ登録可能となります。",
+		"excelModal_Message_2" : "DBセーブをクリックすると該当する.csvファイルが会員DBにセーブされます。",
+		"excelModal_addUser" : "会員追加.",
+
+		"loadingMessage" : "メールを送信します。しばらくお待ちください。", 
+		"successMessage" : "返答メールが送信しました。",
+		"emailCheck_Alert_1" : "すでに登録されたメールアドレスです。",
+		"emailCheck_Alert_2" : "メールアドレスが正しくありません。",
+		"emailCheck_true" : "使用可能です。",
+
+		"notChoiceUser" : "選ばれたユーザーがいないです。",
+		"sendEddAdmin" : "に管理者権限を与えるためにメールを送信しますか。",
+		"sendAdminMail" : "管理者権限の付与に関するメールを送信しました。",
+		"failAdminMail" :"管理者権限の付与に関するメール送信に失敗しました。",
+		"choiceAlert" : "ユーザーは1人だけ選択してください。",
+
+		"idCheck_Alert_1" : "ユーザーIDを入力してください。",
+		"idCheck_Alert_2" : "ユーザーIDを確認してください。",
+		"passCheck_Alert" : "パスワードを入力してください。",
+		"nameCheck_Alert" : "名前を入力してください。",
+		"successSendMail" : "登録済み。メールが送信しました。",
+
+		"idePowerMessage" : "会員にIDE権限を与えますか。",
+		"idePower_true" : "権限が与えられました。",
+		"ideCancleMessage" : "該当する会員のIDE権限を取り消しますか。",
+		"idePower_false" : "権限が取り消されました。",
+
+		"chiceFile" : "ファイルを選択。",
+
+		"doneAddUser" : "会員登録完了",
+		"notCsvFile" : ".csvファイルでありません。",
+
+		"withdrawalMessage" : "会員を退会させる。",
+		"withdrawal" : "退会されました。",
+
+		"Modal_Bt" : "閉じる。"
+	},
+
+	"adminView" : {
+		"adminView" : "会員管理",
+
+		"belong_table" : "所属",
+		"id_table" : "ユーザーID",
+		"nickName_table" : "ニックネーム",
+		"joinDate_table" : "入会日",
+		"canclePower" : "権限解除",
+		"certified_table" : "認証",
+		"unCertified_table" : "未認証",
+		"available_table" : "使用可能",
+		"unAvailable_table" : "使用部可能",
+		"ideAssign_Bt" : "IDE権限の付与",
+		"ideCancle_Bt" : "IDE権限の取消し",
+
+		"successMessage" : "返答メールが送信しました。",
+		"emailCheck_Alert_1" : "すでに登録されたメールアドレスです。",
+		"emailCheck_Alert_2" : "メールアドレスが正しくありません。",
+		"emailCheck_true" : "使用可能です。",
+
+		"idCheck_Alert_1" : "ユーザーIDを入力してください。",
+		"idCheck_Alert_2" : "ユーザーIDを確認してください。",
+		"passCheck_Alert" : "パスワードを入力してください。",
+		"nameCheck_Alert" : "名前を入力してください。",
+		"successSendMail" : "登録済み。メールが送信しました。",
+
+		"idePowerMessage" : "会員にIDE権限を与えますか。",
+		"idePower_true" : "権限が与えられました。",
+		"ideCancleMessage" : "該当する会員のIDE権限を取り消しますか。",
+		"idePower_false" : "権限が取り消されました。",
+		
+		"class" : "カテゴリ",
+		"1_admin" : "メイン管理者",
+		"2_admin" : "サブ管理者",
+		"cancleAdmin" : "管理者権限の解除",
+		"askCancle" : "該当ユーザーの管理者権限を解除しますか。",
+		"successAdmin" : "管理者権限が解除されました。"
+	},
+
+	"toolideAccess" : {
+		"toolideAccessFailAlarm1" : "ワークスペースにアクセスするためには、<br>管理者の承認が必要となります。",
+		"toolideAccessFailAlarm2" : "管理者にお問い合わせください。"
+	},
+
+	"footer" : {
+		"copyright" : "Copyright (c) 2014 POPCORNSAR Co.,Ltd. All rights reserved.",
+		"address" : "PopcornSAR | 韓国ソウル市江南区テヘラン路306、KAITタワー8階 | contact@popcornsar.com | TEL : +82-2-2188-3068 <br>| FAX : +82-2-2188-3055"
+	}
+
 }

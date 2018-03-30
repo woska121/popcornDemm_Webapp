@@ -1,15 +1,271 @@
 {
-    "header" : {
-        "globalNavBar" : {
-            "logo" : "노드제이에스",
-            "home" : "홈",
-            "join" : "회원가입",
-            "login" : "로그인",
-            "admin" : "관리자페이지",
-            "mypage" : "마이페이지"
-        }
+	"header" : {
+        "title": "팝콘사",
+        "join": "회원가입",
+		"login": "로그인",
+		"logout": "로그아웃",
+		"mypage": "마이페이지",
+		"toolide": "Toolide",
+		"language" : "언어",
+		"en" : "영어",
+		"jp" : "일본어"
     },
-    "Errormessage" : "페이지를 찾을 수 없습니다.",
-    "hello": "안녕하세요.",
-    "helloWithHTML": "안녕하세요2."
+    
+	"login": {
+		"title": "로그인",
+		"inputId" : "아이디",
+		"inputPassword" : "패스워드",
+		"idSaveCheck": "아이디저장",
+		"loginButton" : "로그인",
+		"joinButton": "회원가입",
+		"serchPassword": "비밀번호 찾기",
+		"inputMessge_1": "아이디를 입력해주세요.",
+		"inputMessge_2": "패스워드를 입력해주세요.",
+		"CheckMessage": "아이디 또는 비밀번호 오류입니다.",
+		"notEmailCheckMessage" :"이메일 인증이 안된 회원입니다.",
+		"sendEmailAgain" :"인증메일 재전송을 원하시면 클릭",
+		"dormancyMessage" : " 휴면 회원입니다.",
+		"release" : "휴면상태 해제를 원하시면 클릭"
+	},
+
+	"resendEmail" : {
+		"title" : "인증메일 재전송",
+		"content" : "이메일이 인증되지 않았습니다.<br>재전송을 원하시면 방금 로그인 시 입력하셨던 이메일을 다시 적어주세요.<br>이메일이 같지 않으면 재전송이 불가합니다.<br><br>",
+		"content2" : "7일이 지난 후까지 재전송 이메일 인증을 안하시면 해당 이메일 아이디는 사용이 불가합니다.",
+		"resendBt" : "인증메일 재전송",
+		"msg_userid" : "이메일을 입력해주세요.",
+		"watingMessage" : "이메일을 발신 중 입니다. 잠시만 기다려주세요.",
+		"sendSuccessMessage" : "<p>사용자의 메일로 메일이 재발송되었습니다!<br>메일을 인증하신 후, 로그인을 다시해주세요!</p>",
+		"notMatchEmail" :"로그인 시 입력하신 이메일이 아닙니다."
+	},
+
+	"logoutMessage":"로그아웃 하시겠습니까??",
+
+	"join": {
+		"title": "회원가입",
+		"message" : "아이디는 인증 가능한 이메일로 입력해주세요.",
+		"inputId" : "아이디",
+		"inputNickName" : "닉네임",
+		"inputPassword" : "패스워드",
+		"inputPasswordCheck" : "패스워드확인",
+		"agreeMessage" : "(주)팝콘사가 제공하는 서비스 약관에 동의합니다.",
+		"agreeView" : "약관보기",
+		"emailMessage_1" : "아래 Sign up 버튼 클릭 시 가입 시 입력하신 이메일로 인증 메일이 발송됩니다.<br> 이메일 인증을 하셔야 로그인이 가능합니다.<br><br>",
+		"emailMessage_2" : "24시간 이내 이메일 인증을 하지 않으실 경우 해당 아이디를 사용하실 수 없습니다.",
+		"SignUp" : "회원가입",
+		
+		"idCheckMessage_1" : "아이디를 입력해주세요.",
+		"idCheckMessage_2" : "아이디 체크를 진행해주세요.",
+		"nickNameCheckMessage" : "닉네임 체크를 진행해주세요",
+		"passCheckMessage_1" : "패스워드를 입력해주세요.",
+		"passCheckMessage_2" : "확인 패스워드를 입력해주세요.",
+		
+		"passwordCheckMessage_1" : "비밀번호는 8~15자리 영어와 숫자, 특수문자가 모두 포함되어야 합니다.",
+		"passwordCheckMessage_2" : "패스워드가 다릅니다.",
+		"nameChceckMessage" : "이름을 입력해주세요.",
+		"agreeCheckMessage" : "서비스약관에 동의해주시기 바랍니다.",
+
+		"idCheckMessage_false" : "이메일이 이미 존재합니다.",
+		"idCheckMessage_false_2" : "이메일 형식이 아닙니다.",
+		"idCheckMessage_true" : "사용가능합니다.",
+
+		"failNickName" : "이미 존재하는 닉네임입니다.",
+		"successNicName" : "사용가능합니다."
+	},
+	
+	"joinSuccess" : {
+		"title" : "회원가입 완료!" ,
+		"content" : "이메일 인증을 진행해 주세요!"
+	},
+
+	"joinCompleted" : "이메일 인증 완료되었습니다." ,
+	
+	"findPassword" :{
+		"title" : "비밀번호 찾기",
+		"message" : "회원님의 메일로 임시 비밀번호를 보내드립니다.",
+		"inputMessage" : "가입하신 이메일 주소를 이곳에 입력하세요",
+		"sendButton" : "임시 비밀번호 발송",
+		"emailAlertMessage" : "이메일을 입력해주세요.",
+		"loadingMessage" : " 메일을 발신 중 입니다 잠시만 기다려주세요", 
+		"doneMessage" : "<p>사용자의 메일로 임시비밀번호가 발급되었습니다! 로그인 후 비밀번호를 반드시 변경해주세요!</p>",
+		"idCheckMessage" : "일치하는 이메일 아이디가 없습니다.",
+		"subject" : "팝콘사 - 임시 비밀번호입니다.",
+		"html" :  "아래와 같이 요청하신 임시비밀번호가 발급되었습니다.<br> 로그인 후 임시비밀번호를 반드시 변경하시기 바랍니다.  ..<br><br> 임시비밀번호 :"
+	}, 	
+
+	"toolide": {
+		"title": "WORKSPACE",
+		"title2" : "LIST",
+		"subTitle" : "워크스페이스 생성",
+		"subtitle2" : "워크스페이스 리스트",
+		"createWorkspace" : "워크스페이스 생성하기",
+		"demoverMessage" : "<p>Demo version에서는 워크스페이스가<br><b>최대 1개</b> 생성 가능합니다.</p>",
+		"workspaceName" : "워크스페이스",
+		"run" : "실행",
+		"remove" : "삭제",
+		"confirmRemove" : "을 정말로 삭제하시겠습니까?",
+		"failRemove" : "워크스페이스 삭제 시도 실패! 다시 시도해 주세요!",
+		"successRemove" : "삭제 완료되었습니다.",
+		"failCreateWorkspace" : "워크스페이스 생성 시도 실패! 다시 시도해주세요.",
+		"successCreate" : "생성 완료 되었습니다!",
+		"loading" : "loading"
+	},
+
+	"myPage_sideBar": {
+		"title": "마이페이지",
+		"menu" : "메뉴",
+		"memberInfomation" : "회원정보 수정"
+	},
+
+	"memberInfomation" :{
+		"title" : "회원정보 수정",
+		"name" : "이름",
+		"id" : "아이디",
+		"currentPassword" : "현재 비밀번호",
+		"newPassword" : "새 비밀번호",
+		"checkNewPassword" : "새 비밀번호 확인",
+		"modify_Bt" : "수정하기",
+
+		"nameAlertMessage" : "이름을 입력해주세요",
+		"currentPassword_Check_Message" : "현재 비밀번호를 체크해주세요.",
+		"currentPassword_Alert_Message" :"현재 비밀번호를 입력해 주세요",
+		"newPassword_Alert_Message" : "새로운 비밀번호를 입력하세요.",
+		"confirmPasswodr_Alert_Message" :"확인 패스워드를 입력해주세요",
+		"passwordCheckMessgae" :"비밀번호는 8~15자리 영어와 숫자, 특수문자가 모두 포함되어야 합니다.",
+		"password_false" : "비밀번호가 다릅니다",
+
+		"currentPassword_false_Message_2" :"현재 패스워드가 아닙니다.",
+		"currentPassword_true_Message" :"현재 패스워드가 맞습니다.",
+		"modify_SuccessMessage" : "회원정보 수정 성공"
+	},
+
+	"admin_sideBar" : {
+		"menu" : "menu",
+		"allUserView" :"전체회원 조회",
+		"adminView" :"관리자 조회"
+	},
+
+	"allUserView" :{
+		"title" : "전체 회원 조회",
+		"eamilSend_Bt" : "이메일 발송",
+		"addUser_Bt" : "회원 추가",
+		"csv_Bt" : ".csv파일로 다운로드",
+		"excel_Bt" : "회원 excel import 추가",
+		"addAdmin_Bt" :"관리자권한 추가",
+
+		"belong_table" : "소속",
+		"id_table" : "아이디",
+		"nickName_table" : "닉네임",
+		"joinDate_table" : "회원가입 일",
+		"emailStatus_table" : "이메일 인증여부",
+		"idePower_table" : "IDE권한",
+		"ideStatus_table" : "IDE권한부여/취소",
+		"certified_table" : "인증",
+		"unCertified_table" : "미인증",
+		"available_table" : "사용가능",
+		"unAvailable_table" : "사용불가",
+
+		"ideAssign_Bt" : "IDE권한부여",
+		"ideCancle_Bt" : "IDE권한취소",
+
+		"MailModal" : "메일 보내기",
+		"MailModal_title" : "제목을 입력하세요",
+		"MailModal_content" : "내용을 입력하세요",
+		"MailModal__Bt" : "전송",
+		
+		"addUserModal" : "회원 추가",
+		"addUserModal_id" : "User Id",
+		"addUserModal_name" : "Name",
+		"addUserModal_password" : "Password",
+		"addUserModal_company" : "Company Name",
+		"addUserModal_Message" : "기업 단체 회원의 경우 기업명 명시",
+		
+		"excelModal" : "회원 EXCEL Import",
+		"excelModal_Message" : "확장자 .csv 파일만 가능합니다",
+		"excelModal_Message_2" : "DB저장 버튼 클릭 시 해당 .csv 파일이 회원 DB에 저장됩니다.",
+		"excelModal_addUser" : "회원추가.",
+
+		"loadingMessage" : " 메일을 발신 중 입니다 잠시만 기다려주세요", 
+		"successMessage" : "답변이메일이 전송되었습니다!",
+		"emailCheck_Alert_1" : "이메일이 이미 존재합니다.",
+		"emailCheck_Alert_2" : "이메일 형식이 아닙니다.",
+		"emailCheck_true" : "사용 가능합니다.",
+
+		"notChoiceUser" : "선택된 회원이 없습니다!",
+		"sendEddAdmin" : "에게 관리자 권한부여 메일을 보내겠습니가?",
+		"sendAdminMail" : "관리자 권한 부여 메일 전송 성공!",
+		"failAdminMail" :"관리자 권한 부여 메일 전송 실패!",
+		"choiceAlert" : "한명의 회원만 선택해주세요!",
+
+		"idCheck_Alert_1" : "아이디를 입력해주세요.",
+		"idCheck_Alert_2" : "아이디를 체크해주세요",
+		"passCheck_Alert" : "패스워드를 입력해주세요.",
+		"nameCheck_Alert" : "이름을 입력해주세요.",
+		"successSendMail" : "등록 알림메일 전송 성공!",
+
+		"idePowerMessage" : "회원에게 ide 권한을 부여하시겠습니까?",
+		"idePower_true" : "권한이 부여되었습니다",
+		"ideCancleMessage" : "해당 회원의 IDE 권한을 취소하시겠습니까?",
+		"idePower_false" : "권한이 취소되었습니다.",
+
+		"chiceFile" : "파일을 선택하세요.",
+		"doneAddUser" : "회원등록 완료.",
+		"notCsvFile" : ".csv파일이 아닙니다.",
+
+		"withdrawalMessage" : "회원을 강제탈퇴 하시겠습니까?",
+		"withdrawal" : "탈퇴되었습니다.",
+
+		"Modal_Bt" : "닫기"
+	},
+
+	"adminView" : {
+		"adminView" : "관리자 조회",
+
+		"belong_table" : "소속",
+		"id_table" : "아이디",
+		"nickName_table" : "닉네임",
+		"joinDate_table" : "회원가입 일",
+		"canclePower" : "권한해제",
+		
+		"certified_table" : "인증",
+		"unCertified_table" : "미인증",
+		"available_table" : "사용가능",
+		"unAvailable_table" : "사용불가",
+		"ideAssign_Bt" : "IDE권한부여",
+		"ideCancle_Bt" : "IDE권한취소",
+
+		"successMessage" : "답변이메일이 전송되었습니다!",
+		"emailCheck_Alert_1" : "이메일이 이미 존재합니다.",
+		"emailCheck_Alert_2" : "이메일 형식이 아닙니다.",
+		"emailCheck_true" : "사용 가능합니다.",
+
+		"idCheck_Alert_1" : "아이디를 입력해주세요.",
+		"idCheck_Alert_2" : "아이디를 체크해주세요",
+		"passCheck_Alert" : "패스워드를 입력해주세요.",
+		"nameCheck_Alert" : "이름을 입력해주세요.",
+		"successSendMail" : "등록 알림메일 전송 성공!",
+
+		"idePowerMessage" : "회원에게 ide 권한을 부여하시겠습니까?",
+		"idePower_true" : "권한이 부여되었습니다",
+		"ideCancleMessage" : "해당 회원의 IDE 권한을 취소하시겠습니까?",
+		"idePower_false" : "권한이 취소되었습니다.",
+
+		"class" : "분류",
+		"admin_1" : "제 1관리자",
+		"admin_2" : "제 1관리자",
+		"cancleAdmin" : "관리자권한해제",
+		"askCancle" : "회원의 관리자 권한을 취소하시겠습니까?",
+		"successAdmin" : "권한이 취소되었습니다."
+	},
+
+	"toolideAccess" : {
+		"toolideAccessFailAlarm1" : "워크스페이스 페이지에 접근하려면 관리자 승인이 필요합니다. ",
+		"toolideAccessFailAlarm2" : "관리자에게 문의하세요."
+	},
+
+	"footer" : {
+		"copyright" : "Copyright (c) 2014 POPCORNSAR Co.,Ltd. All rights reserved.",
+		"address" : "PopcornSAR | 서울특별시 강남구 테헤란로 306 카이트타워 8층 (르네상스호텔 사거리) | contact@popcornsar.com | TEL : 02-2188-3068 <br>| FAX : 02-2188-3055"
+	}
+
 }

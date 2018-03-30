@@ -1,46 +1,519 @@
 <% include ../header.ejs %>
+				
+<section id="admin">
+    <div class="container">
     <% include ./sidebar.ejs %>
-     <div class="col-sm-10">
+    <div class="col-sm-10">
         <table class="table table-bordered table-hover">
-            <h3><p class="text-center">회원 조회</p></h3>
+            <h3><p class="text-center"><%= language.allUserView.title%></p></h3><br>
+            <button class="btn " data-toggle="modal" id="sendEmail" onclick="showModal();">
+                <i class="fa fa-envelope-open" aria-hidden="true"></i><%= language.allUserView.eamilSend_Bt%>
+            </button> 
+            <button class="btn btn-info" data-toggle="modal" data-target="#registerMemberModal">
+                <i class="fa fa-user-plus" aria-hidden="true"></i><%= language.allUserView.addUser_Bt%>
+            </button>
+            <!-- <button class="btn btn-primary" id="authorizeMemberBtn">권한 부여</button> !-->
+            <button class="btn btn-info" onclick="exportTableToCSV('members.csv')">
+                <i class="fa fa-download" aria-hidden="true"></i><%= language.allUserView.csv_Bt%>
+            </button>
+            <button class="btn btn-info" data-toggle="modal" data-target="#importExcelModal">
+                <i class="fa fa-users" aria-hidden="true"></i><%= language.allUserView.excel_Bt%>
+            </button>
+            <%  if(userData.authority==1) {%>
+                <button class="btn btn-info" id="addAdminBtn">
+                    <i class="fa fa-key" aria-hidden="true"></i><%= language.allUserView.addAdmin_Bt%>
+                </button> 
+            <%}%>
+            <br>
             <br>
             <tr>
-                <th>아이디</th>
-                <th>닉네임</th>
-                <th>회원가입일</th>
-                <th>이메일인증여부</th>
-                <th>활성상태</th>
-                <th>사이버머니</th>
-                <th>결제상품</th>
-                <th>결제일</th>
-                <th>남은일수</th>
-            </tr>            
-                <% user.forEach(function(user) { %>                 
-            <tr>           
-                <td><%=user.userid%></td>
-                <td><%=user.displayname%></td>
-                <td> 
-                    <%=user.getDate.year%> -
-                    <%=user.getDate.month%> - 
-                    <%=user.getDate.day%>
-                </td>
-                <% if(user.subscription_status == true) {%>
-                    <td>인증</td>
-                <%} else {%>
-                    <td>미인증</td>
-                <%}%>
-
-                <% if(user.state == true) {%>
-                    <td>활성</td>
-                <%} else {%>
-                    <td>탈퇴</td>
-                <%}%>
-                <td></td>                        
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>            
-            <%})%>
+                <th><input type="checkbox" id="checkAll"></th>
+                <th><%= language.allUserView.belong_table%></th>
+                <th><%= language.allUserView.id_table%></th>
+                <th><%= language.allUserView.nickName_table%></th>
+                <th><%= language.allUserView.joinDate_table%></th>
+                <th><%= language.allUserView.emailStatus_table%></th>
+                <!--<th>결제상태</th>-->
+                <th><%= language.allUserView.idePower_table%></th>
+                <th><%= language.allUserView.ideStatus_table%></th>
+                <!--<th>강제탈퇴처리</th>!-->
+            </tr>
+            
+            <% user.forEach(function(user) { %>                 
+                <tr>           
+                    <td><input type="checkbox" name="mcheck" value="<%=user.userid%>"></td>
+                    <td><%=user.company_name%></td>
+                    <td><%=user.userid%></td>
+                    <td><%=user.displayname%></td>
+                    <td> 
+                        <%=user.getDate.year%> -
+                        <%=user.getDate.month%> - 
+                        <%=user.getDate.day%>
+                    </td>
+                    <% if(user.email_verification_state == true) {%>
+                        <td><%= language.allUserView.certified_table%></td>
+                    <% } else { %>
+                        <td><%= language.allUserView.unCertified_table%></td>
+                    <% } %>
+                    <!-- <td></td> -->
+                    <% if(user.ide_authority == true) {%>
+                        <td><%= language.allUserView.available_table%></td>
+                    <% } else { %>
+                        <td><%= language.allUserView.unAvailable_table%></td>
+                    <% } %>
+                    <td>
+                        <button class="btn btn-info" onclick="ideAuthorizeMember('<%=user.userid%>')">
+                            <i class="fa fa-id-card" aria-hidden="true"></i><%= language.allUserView.ideAssign_Bt%>
+                        </button>
+                        <br><br>
+                        <button class="btn btn-danger" onclick="cancelIdeAuthorizeMember('<%=user.userid%>')">
+                            <i class="fa fa-window-close-o" aria-hidden="true"></i><%= language.allUserView.ideCancle_Bt%>
+                        </button>
+                    </td>
+                    <!--<td><button class="btn btn-danger" onclick="forcedWithdrawMember('<%=user.userid%>')">강제탈퇴</button></td>-->
+                </tr>            
+            <% }); %>
         </table>
+            
+        <div class="paging">
+            <%if(curSet > 1){%> 
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true" onclick="location.href='/admin/memberCheck?page=<%=startPage-1%>'"></span>
+            <%}%>            
+            <%for(var i = startPage; i <= endPage; i++){%>
+                <%if(i > totalPage) {%>                  
+                <%} else {%> 
+                <a href="/admin/memberCheck?page=<%=i%>"><%=i%></a>
+                <%}%>
+            <%}%>            
+            <%if(curSet < totalSet){%>
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true" onclick="location.href='/admin/memberCheck?page=<%=endPage+1%>'"></span>
+            <%}%>  
+        </div>    
+        
+        <div>
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">            
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><%= language.allUserView.MailModal%></h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" action="" id="send_form" method="post" >            
+                    <input class="form-control" id="send_to" name="send_to" required>                   
+                    <br>
+                    <input class="form-control" id="send_title" name="send_title" placeholder="<%= language.allUserView.MailModal_title%>" required>
+                    <br>
+                    <textarea class="form-control" id="send_content" name="send_content" placeholder="<%= language.allUserView.MailModal_content%>" rows="5" required></textarea><br>                    
+                    <br>
+                    <input type="submit"  class="btn btn-lg btn-success btn-block" value="<%= language.allUserView.MailModal__Bt%>">   
+                    <span id="message"></span>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><%= language.allUserView.Modal_Bt%></button>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+
+        <div>
+        <div class="modal fade" id="registerMemberModal" role="dialog">
+            <div class="modal-dialog">            
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><%= language.allUserView.addUserModal%></h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" id="register_form" method="post" action="/admin/registerMember" onsubmit="return registerMember();">
+                        <fieldset>
+                            <div class="form-group">
+                                <label for="userid" class="col-sm-3 control-label"><%= language.allUserView.addUserModal_id%></label>
+                                <div class="col-sm-9">
+                                    <input type="email" id="userid" name="userid" placeholder="Email" class="form-control" autofocus="">
+                                    <span id="msg_userid"></span><input type="hidden" id="useridCheck" value="">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="displayname" class="col-sm-3 control-label"><%= language.allUserView.addUserModal_name%></label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="displayname" name="displayname" placeholder="Name" class="form-control">
+                                    <span id="msg_displayname"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="password" class="col-sm-3 control-label"><%= language.allUserView.addUserModal_password%></label>
+                                <div class="col-sm-9">
+                                    <input type="password" id="password" name="password" placeholder="Password" class="form-control">
+                                    <span id="msg_password"></span>
+                                </div>
+                            </div> 
+                            <div class="form-group">
+                                <label for="company_name" class="col-sm-3 control-label"><%= language.allUserView.addUserModal_company%></label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="company_name" name="company_name" placeholder="Company Name" class="form-control">
+                                    <span class="help-block"><%= language.allUserView.addUserModal_Message%></span>
+                                    <span id="msg_company_name"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-9 col-sm-offset-3">
+                                <input type="submit" class="btn btn-primary btn-block" value="Register"/>
+                            </div>                   
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><%= language.allUserView.Modal_Bt%></button>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+
+        
+        <div>
+            <div class="modal fade" id="importExcelModal" role="dialog">
+                <div class="modal-dialog">            
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"><%= language.allUserView.excelModal%></h4>
+                    </div>
+                    <div class="modal-body">     
+                        <form role="form" id="import_form" enctype="multipart/form-data" method="post" onsubmit="return csvImportMember();">          
+                            <div>
+                                <input type="text" class="form-control-file" id="uploadFile" name="uploadFile"><br> 
+
+                                <span id="msg_uploadfile"></span><br><br>
+                                <p>&nbsp;&nbsp;<%= language.allUserView.excelModal_Message%><br>
+                                &nbsp;&nbsp;<%= language.allUserView.excelModal_Message_2%></p>
+                                <button type="button" class="btn btn-primary pull-right" onclick="csvImportMember();"><%= language.allUserView.excelModal_addUser%></button>
+                                <br>
+                            </div>
+                        </form>                    
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal"><%= language.allUserView.Modal_Bt%></button>
+                    </div>       
+                </div>
+                </div>
+            </div>
+        </div>    
+
+    </div>
+    </div>
+</section>
+
+    
+
+
+
+
+<script type="text/javascript">    
+$(document).ready(function() {
+    $("#checkAll").click(function() {
+        if ($("#checkAll").prop("checked")) {
+            $("input[name=mcheck]").prop("checked", true);
+        } else {
+            $("input[name=mcheck]").prop("checked", false);
+        }
+    });
+
+    $("#send_form").submit(function(){
+        var from, to, subject, text;
+        var to = $("#send_to").val();
+        var title = $("#send_title").val();
+        var content = $("#send_content").val();
+
+        // 이메일 전송 후 submit
+        $("#message").text("<%= language.allUserView.loadingMessage%>");
+        $.get("/admin/mailToMember",{to:to, title:title, content:content},function(data){
+            if(data=="sent"){
+            $("#message").empty().html("<p><%= language.allUserView.successMessage%></p>");
+                return true;
+            }
+        });        
+    });    
+
+    // 이메일 형식, 중복체크       
+    $('#userid').blur(function() {
+        var $useridInput = $('#register_form input[name=userid]');
+        var userid = $('#userid').val();
+        var userid_regex =  /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/;
+        var useridValue = $(this).val();
+        //값이 있을때만 진행
+        if(useridValue){
+            $.ajax({
+                url: '/accounts/checkuserid/'+useridValue.trim(), //trim 양쪽 공백이 있을시 제거
+                type: 'GET',
+            })
+            .done(function(args) {
+                if(args.userExist){ //아이디가 존재
+                    $('#msg_userid').html("<%= language.allUserView.emailCheck_Alert_1%>").css("color", "red");
+                    $('#useridCheck').val(''); //못넘어가게 값을 비운다
+                    return false;
+                }else{ //아이디가 존재하지 않음
+                    if(userid_regex.test(useridValue)==false){
+                        $("#msg_userid").html("<%= language.allUserView.emailCheck_Alert_2%>").css("color", "red");
+                        $('#useridCheck').val(''); //못넘어가게 값을 비운다
+                        return false;
+                    }else{    
+                        $('#msg_userid').html("<%= language.allUserView.emailCheck_true%>").css("color", "blue");
+                        $('#useridCheck').val('checked'); //유효성 통과하게 설정                        
+                    }
+                }
+            })
+            .fail(function(args) {
+                console.log(args);
+            });
+        }
+    });      
+
+
+    $("#authorizeMemberBtn").click(function(e) {    
+        var mcheck = $('input[name=mcheck]');    
+        var userEmail = "";
+        for(var i=0; i<mcheck.length; i++){
+            if(mcheck[i].checked == true){
+                userEmail += mcheck[i].value + ",";
+            }
+        }
+        console.log("userEmail===" + userEmail);        
+        //alert(userEmail);
+    });
+
+    $("#addAdminBtn").click(function() {    
+        var mcheck = $('input[name=mcheck]');    
+        var checkedUser = [];
+        var userId = "";
+        for(var i=0; i<mcheck.length; i++){
+            if(mcheck[i].checked == true){
+                checkedUser[i] = mcheck[i].value;
+            }
+        }     
+
+        console.log(checkedUser[0]);
+        if(checkedUser.length == 0) {
+            alert("<%= language.allUserView.notChoiceUser%>");
+        } else if(checkedUser.length == 1) {          
+            userId = checkedUser[0];
+            if(confirm(userId + "<%= language.allUserView.sendEddAdmin%>")==true){
+                $.post("/admin/sendAddAdminAuthEmail", {userId:userId}, function(data) {
+                    if(data == "sent") {
+                        alert("<%= language.allUserView.sendAdminMail%>");
+                    } else {
+                        alert("<%= language.allUserView.failAdminMail%>");                    
+                    }
+                });
+            } else {
+                return;
+            }
+        } else if(checkedUser.length > 1) {
+            alert("<%= language.allUserView.choiceAlert%>");
+        }
+                
+    });
+
+
+});
+
+function registerMember() {   
+    var $useridInput = $('#register_form input[name=userid]');
+    var $passwordInput = $('#register_form input[name=password]');
+    var $displayname = $('#register_form input[name=displayname]');
+    var password = $('#password').val();
+    var userid = $('#userid').val();
+    var userid_regex =  /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-Za-z0-9\-]+/; // 이메일 형식 체크
+    var password_regex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/; //비번 형식 체크         
+    var to = userid;
+    
+    if(!$useridInput.val()){
+        $("#msg_userid").html("<%= language.allUserView.idCheck_Alert_1%>").css("color","red");
+        $useridInput.focus();
+        return false;
+    }            
+    if($('#useridCheck').val()!=='checked'){
+        alert('<%= language.allUserView.idCheck_Alert_2%>');
+        return false;
+    }
+    
+    if(!$passwordInput.val()){
+        $("#msg_password").html("<%= language.allUserView.passCheck_Alert%>").css("color","red");
+        $passwordInput.focus();
+        return false;
+    }                       
+    
+    if(!$displayname.val()){
+        $("#msg_displayname").html("<%= language.allUserView.nameCheck_Alert%>").css("color", "red");
+        $displayname.focus();
+        return false;
+    }        
+    
+    // 인증 메일 발송 (submit 버튼 클릭 시 인증 메일 발송되도록 함.)    
+    $.get("/admin/sendEmailToRegisterMember",{to:to, password:password},function(data){
+        if(data=="sent"){
+        console.log("<%= language.allUserView.successSendMail%>");
+        }
+    });    
+    // 검증완료시 action으로 넘어감
+    return true; 
+}
+
+
+function ideAuthorizeMember(userid) {
+    $.ajax({
+        url : '/admin/ideAuthorizeMember/'+userid,
+        type : 'POST'
+    })
+    .success(function(args) {                
+        if(args){
+            if(confirm(userid +" "+"<%= language.allUserView.idePowerMessage%>")==true){
+                alert("<%= language.allUserView.idePower_true%>");
+                document.location.href ='/admin/memberCheck';
+            } else {
+                return;
+            }            
+        }
+    })
+    .fail(function(args) {
+        console.log(args);
+    });
+}
+
+function cancelIdeAuthorizeMember(userid) {
+    $.ajax({
+        url : '/admin/cancelIdeAuthorizeMember/'+userid,
+        type : 'POST'
+    })
+    .success(function(args) {                
+        if(args){
+            var cancleMessage = "<%= language.allUserView.ideCancleMessage%>";
+            var str = cancleMessage.replace(/&#39;/g,'\''); //작은따옴표로 치환
+            if(confirm(userid +" "+str)==true){
+                alert("<%= language.allUserView.idePower_false%>");
+                document.location.href ='/admin/memberCheck';
+            } else {
+                return;
+            }            
+        }
+    })
+    .fail(function(args) {
+        console.log(args);
+    });
+}
+
+function csvImportMember(){
+    var qq = $('#uploadFile').val();
+    console.log(qq);
+    var uploadFile = document.getElementById('uploadFile').value;
+    console.log(uploadFile);
+    var fileExt = uploadFile.slice(uploadFile.indexOf(".") + 1).toLowerCase();
+    if(uploadFile == '') {
+        $("#msg_uploadfile").html("<%= language.allUserView.chiceFile%>").css("color", "red");
+        return false;            
+    } else {
+        if(fileExt == "csv") {
+            //csv파일 import ajax 처리
+            $.get("/admin/csvImportMember",{uploadFile:uploadFile},function(data){
+                if(data=="sent"){
+                console.log("<%= language.allUserView.doneAddUser%>");
+                }
+            }); 
+
+        } else {
+            $("#msg_uploadfile").html("<%= language.allUserView.notCsvFile%>").css("color", "red");
+            return false;
+        }
+    }
+}
+
+function forcedWithdrawMember(userid) {
+    $.ajax({
+        url : '/admin/forcedWithdrawMember/'+userid,
+        type : 'POST'
+    })
+    .success(function(args) {                
+        if(args){
+            if(confirm(userid + "<%= language.allUserView.withdrawalMessage%>")==true){
+                alert("<%= language.allUserView.withdrawal%>");
+                document.location.href ='/admin/memberCheck';
+            } else {
+                return;
+            }            
+        }
+    })
+    .fail(function(args) {
+        console.log(args);
+    });
+}
+
+function showModal() {    
+    var mcheck = $("input[name=mcheck]");
+    var userEmail = "";
+    for(var i=0; i<mcheck.length; i++){
+        if(mcheck[i].checked == true){
+            userEmail += mcheck[i].value + ",";
+        }
+    }
+    console.log("userEmail===" + userEmail);
+    $("#myModal").modal('show');
+    $("#myModal").on('shown.bs.modal', function (e) {        
+        var userEmail2 = userEmail.slice(0, -1);
+        $(".modal-dialog #send_to").val(userEmail2); 
+    });                    
+}
+
+function exportTableToCSV(filename) {
+    var csv = [];
+    var rows = document.querySelectorAll("table tr");
+    for (var i = 0; i < rows.length; i++) {
+        var row = [], cols = rows[i].querySelectorAll("td, th");
+        // for (var j = 0; j < cols.length; j++) -> 강제탈퇴처리 버튼까지 보이게됨, 추후 컬럼 추가 시 변경가능성
+        for (var j = 0; j < cols.length-1; j++) 
+            row.push(cols[j].innerText);
+        
+        csv.push(row.join(","));        
+    }
+
+    // Download CSV file
+    downloadCSV(csv.join("\n"), filename);
+}
+
+function downloadCSV(csv, filename) {
+    var csvFile;
+    var downloadLink;
+
+    // CSV file
+    csvFile = new Blob(['\uFEFF' + csv], {type: 'text/csv;charset=utf-8'});
+
+    // Download link
+    downloadLink = document.createElement("a");
+
+    // File name
+    downloadLink.download = filename;
+
+    // Create a link to the file
+    downloadLink.href = window.URL.createObjectURL(csvFile);
+
+    // Hide download link
+    downloadLink.style.display = "none";
+
+    // Add the link to DOM
+    document.body.appendChild(downloadLink);
+
+    // Click download link
+    downloadLink.click();
+}
+
+
+
+</script>
+
 
 <% include ../footer.ejs %>

@@ -1,0 +1,123 @@
+{
+    "AWSTemplateFormatVersion" : "2010-09-09",
+  
+    "Description" : "Create user's own workspace for IDE.",
+
+    "Parameters" : {
+      "KeyPairName" : {
+        "Type" : "AWS::EC2::KeyPair::KeyName",
+        "Default" : "testkeypair"
+      },
+      "Ec2AmiImageId" : {
+        "Type" : "AWS::EC2::Image::Id",
+        "Default" : "ami-7c79df12"
+      },
+      "Ec2InstanceType" : {
+        "Type" : "String",
+        "Default" : "t2.micro"
+      },
+      "Ec2SG" : {
+        "Type" : "AWS::EC2::SecurityGroup::Id",
+        "Default" : "sg-7130871a"
+      },
+      "PrivateSubnetId" : {
+        "Description" : "Private subnet for ide instance, ap-northeast-2a",
+        "Type" : "AWS::EC2::Subnet::Id",
+        "Default" : "subnet-1fa83d77 "
+      },
+      "PrivateSubnetId2" : {
+        "Description" : "Private subnet for ide instance, ap-northeast-2c",
+        "Type" : "AWS::EC2::Subnet::Id",
+        "Default" : "subnet-13c4015f"
+      },
+      "TagNameValue" : {
+        "Type" : "String",
+        "Default" : "test-ide-ec2"
+      },
+      "ElbSG" : {
+        "Type" : "AWS::EC2::SecurityGroup::Id",
+        "Default" : "sg-3d00be56"
+      },
+      "VpcId" : {
+        "Type" : "String",
+        "Default" : "vpc-1ee94576"
+      }
+    },
+
+    "Resources" : {
+      "Ec2Instance" : {
+        "Type" : "AWS::EC2::Instance",
+        "Properties" : {
+            "KeyName" : {"Ref" : "KeyPairName"},
+            "ImageId" : {"Ref" : "Ec2AmiImageId"},
+            "InstanceType" : {"Ref" : "Ec2InstanceType"},
+            "NetworkInterfaces" : [{
+              "AssociatePublicIpAddress" : "false",
+              "DeviceIndex" : "0",
+              "SubnetId" : {"Ref" : "PrivateSubnetId"},
+              "GroupSet" : [{"Ref" : "Ec2SG"}]
+            }],
+            "Tags" : [ {"Key" : "Name", "Value" : {"Ref" : "TagNameValue"}} ]
+        }
+      },
+
+
+      "ALBListener" : {
+        "Type" : "AWS::ElasticLoadBalancingV2::Listener",
+        "DependsOn" : "ApplicationLoadBalancer",
+        "Properties" : {
+          "DefaultActions" : [{
+            "Type" : "forward",
+            "TargetGroupArn" : { "Ref" : "ALBTargetGroup" }
+          }],
+          "LoadBalancerArn" : { "Ref" : "ApplicationLoadBalancer" },
+          "Port" : "80",
+          "Protocol" : "HTTP"
+        }
+      },
+      "ApplicationLoadBalancer" : {
+          "Type" : "AWS::ElasticLoadBalancingV2::LoadBalancer",
+          "Properties" : {
+              "Name" : "sampleELB",
+              "Tags" : [ {"Key" : "Name", "Value" : "sampleELB"} ],
+              "SecurityGroups" : [{"Ref" : "ElbSG"}],
+              "Subnets" : [{"Ref" : "PrivateSubnetId"}, {"Ref" : "PrivateSubnetId2"}],
+              "Scheme" : "internet-facing"
+          }
+      },
+      "ALBTargetGroup" : {
+          "Type" : "AWS::ElasticLoadBalancingV2::TargetGroup",    
+          "DependsOn" : "ApplicationLoadBalancer",   
+          "Properties" : {
+          "HealthCheckIntervalSeconds" : 60,
+          "UnhealthyThresholdCount" : 10,
+          "HealthCheckPath" : "/",
+          "Name" : "SampleTargetGroup",
+          "Port" : 80,
+          "Protocol" : "HTTP",
+          "VpcId" : {"Ref" : "VpcId"},
+          "TargetType" : "instance",
+          "Targets" : [{
+            "Id" : {"Ref" : "Ec2Instance"}
+          }]
+        }
+      }
+    },
+
+    "Outputs" : {
+        "InstanceId" : {
+            "Description" : "The InstanceId of the newly created EC2 instance",
+            "Value" : {
+                "Ref" : "Ec2Instance"
+            }
+        },
+        "InstancePrivateIp" : {
+          "Description" : "EC2 instance's privateIp",
+          "Value" : {"Fn::GetAtt": [ "Ec2Instance", "PrivateIp"]}
+        },
+        "URL" : {
+          "Description" : "URL of the website",
+          "Value" :  { "Fn::Join" : [ "", [ "http://", { "Fn::GetAtt" : [ "ApplicationLoadBalancer", "DNSName" ]}]]}
+        }
+    } 
+}

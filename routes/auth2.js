@@ -25,7 +25,8 @@ passport.use(new GoogleStrategy({
                 var regData = { //DB에 등록 및 세션에 등록될 데이터
                     userid :  "g_" + profile.id,
                     password : "google_login",
-                    displayname : profile.displayName
+                    displayname : profile.displayName,
+                    email_verification_state : true
                 };
                 var User = new UserModel(regData);
                 User.save(function(err){ //DB저장

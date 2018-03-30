@@ -33,7 +33,8 @@ passport.use(new FacebookStrategy({
                 var regData = { //DB에 등록 및 세션에 등록될 데이터
                     userid :  "fb_" + profile.id,
                     password : "facebook_login",
-                    displayname : profile.displayName
+                    displayname : profile.displayName,
+                    email_verification_state : true
                 };
                 var User = new UserModel(regData);
                 User.save(function(err){ //DB저장

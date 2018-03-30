@@ -1,0 +1,211 @@
+<% include ../header.ejs %>
+
+<!-- <section id="my" class="bg-on navbar-fixed-top">
+</section> -->
+
+<% include ./sidebar.ejs %>
+<div class="container" id="mypage">
+    <div class="form-wrap">
+        <form role="form" action="" id="update_form" method="post">
+            <fieldset> 
+                <div class="required-info-group">
+                <!--<%if (user.userid.indexOf("fb_")==0 || user.userid.indexOf("g_")==0 || user.userid.indexOf("git_")==0) {%>                                              
+                        <div>
+                        계정 회원가입하셨으므로 정보 변경을 원하시면 해당 홈페이지에서 변경하셔야 합니다.
+                        </div>
+                    <%} else {%>-->
+                    <div class="row">
+                        <div class="col-xs-5 row-title required-title input-title"><p><%= language.memberInfomation.name%></p></div>
+                        <div class="col-xs-7">
+                            <input type="text" class="form-control" value="<%=user.displayname %>"placeholder="<%= language.memberInfomation.name%>" name="displayname" data-toggle="popover" data-placement="bottom" readonly>
+                            <span id="msg_displayname"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-5 row-title required-title input-title"><p><%= language.memberInfomation.id%></p></div>
+                        <div class="col-xs-7">
+                            <input type="email" class="form-control" value="<%=user.userid %>" name="userid" id="userid" autofocus=""  readonly data-toggle="popover" data-placement="bottom">
+                            <span id="msg_userid"></span><input type="hidden" id="useridCheck" value="">
+                        </div>
+                    </div>
+                    <div class="row">
+                            <div class="col-xs-5 row-title required-title input-title"><p><%= language.memberInfomation.currentPassword%></p></div>
+                            <div class="col-xs-7">
+                                <input type="password" class="form-control" value="" name="now_password" id="now_password"  data-toggle="popover" data-placement="bottom">
+                                <span id="msg_password"></span><input type="hidden" id="passwordCheck" value="">
+                            </div>
+                        </div>
+                    <div class="row">
+                            <div class="col-xs-5 row-title required-title input-title"><p><%= language.memberInfomation.newPassword%></p></div>
+                            <div class="col-xs-7">
+                                <input type="password" class="form-control" value="" name="new_password" id="new_password" data-toggle="popover" data-placement="bottom">
+                                <span id="msg_password2"></span>
+                            </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-5 row-title required-title input-title"><p><%= language.memberInfomation.checkNewPassword%></p></div>
+                        <div class="col-xs-7">
+                            <input type="password" class="form-control" value="" name="new_password_confirm" id="new_password_confirm" data-toggle="popover" data-placement="bottom">
+                            <span id="msg_password3"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="button-group">
+                    <input type="submit" id="submitButton" class="btn btn-lg btn-success btn-block" value="<%= language.memberInfomation.modify_Bt%>"> 
+                    <!-- <a href="/accounts/withdraw/:id"><input type="button" id="withdrawButton" class="btn btn-lg btn-danger btn-block" value="회원탈퇴"></a> 
+                        <%}%>    !-->
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    
+
+
+
+
+    <!-- <div class="row">
+        <div class="login-panel panel panel-default">
+            <div class="panel-heading">
+                <div class="logo">
+                        <img src="/public/img/login-logo.png">
+                </div>
+                <h3 class="panel-title"><%= language.memberInfomation.title%></h3>
+            </div>
+            <div class="panel-body">
+                <form role="form" action="" id="update_form" method="post">
+                    <fieldset>                         -->
+                        <!--<%if (user.userid.indexOf("fb_")==0 || user.userid.indexOf("g_")==0 || user.userid.indexOf("git_")==0) {%>                                              
+                            <div>
+                            계정 회원가입하셨으므로 정보 변경을 원하시면 해당 홈페이지에서 변경하셔야 합니다.
+                            </div>
+                        <%} else {%>-->
+                        <!-- <div class="form-group"> <%= language.memberInfomation.name%>
+                            <input class="form-control" value="<%=user.displayname %>"placeholder="<%= language.memberInfomation.name%>" name="displayname" type="text" >
+                            <span id="msg_displayname"></span>
+                        </div>
+                        <div class="form-group"> <%= language.memberInfomation.id%>
+                            <input class="form-control" value="<%=user.userid %>" name="userid" id="userid" type="email" autofocus=""  readonly>
+                            <span id="msg_userid"></span><input type="hidden" id="useridCheck" value="">
+                        </div>
+                        <div class="form-group"> <%= language.memberInfomation.currentPassword%>
+                            <input class="form-control" name="now_password" id="now_password" type="password" value="">
+                            <span id="msg_password"></span><input type="hidden" id="passwordCheck" value="">
+                        </div>
+                        <div class="form-group"> <%= language.memberInfomation.newPassword%>
+                            <input class="form-control" name="new_password" id="new_password" type="password" value="" >
+                            <span id="msg_password2"></span>
+                        </div>
+                        <div class="form-group"> <%= language.memberInfomation.checkNewPassword%>
+                            <input class="form-control"  name="new_password_confirm" id="new_password_confirm" type="password" value="" >
+                            <span id="msg_password3"></span>
+                        </div>           
+                        <br>    
+                        <br>
+                        <br>                       
+                        <input type="submit" id="submitButton" class="btn btn-lg btn-success btn-block" value="<%= language.memberInfomation.modify_Bt%>">     
+                        <br>                    
+                        <br> -->
+                        <!-- <a href="/accounts/withdraw/:id"><input type="button" id="withdrawButton" class="btn btn-lg btn-danger btn-block" value="회원탈퇴"></a> !-->
+                       <!--  <%}%>               
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div> -->
+</div>    
+
+
+<script type="text/javascript">
+(function(){
+    $(document).ready(function() {
+        $('#update_form').submit(function(){
+            var $displaynameInput = $('#update_form input[name=displayname]');
+            var $nowPasswordInput = $('#update_form input[name=now_password]');
+            var $newPasswordInput = $('#update_form input[name=new_password]');
+            var $newPasswordConfirmInput = $('#update_form input[name=new_password_confirm]');
+            var new_password = $('#new_password').val();
+            var password_regex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/; //비번 형식 체크               
+
+            if(!$displaynameInput.val()){
+                $("#msg_displayname").html("<%= language.memberInfomation.nameAlertMessage%>").css("color", "red");
+                $displaynameInput.focus();
+                return false;
+            }
+
+            if($('#passwordCheck').val()!=='checked'){
+                alert('<%= language.memberInfomation.currentPassword_Check_Message%>');
+                return false;
+            }
+
+            if(!$nowPasswordInput.val()){
+                $("#msg_password").html("<%= language.memberInfomation.currentPassword_Alert_Message%>").css("color","red");
+                $nowPasswordInput.focus();
+                return false;
+            }
+            
+
+            if(!$newPasswordInput.val()){
+                $("#msg_password2").html("<%= language.memberInfomation.newPassword_Alert_Message%>").css("color","red");
+                $newPasswordInput.focus();
+                return false;
+            }
+            
+
+            if(!$newPasswordConfirmInput.val()){
+                $("#msg_password3").html("<%= language.memberInfomation.confirmPasswodr_Alert_Message%>").css("color", "red");
+                $newPasswordConfirmInput.focus();
+                return false;
+            }                 
+            
+            
+            if(password_regex.test(new_password) == false) {
+                $("#msg_password2").html("<%= language.memberInfomation.passwordCheckMessgae%>").css("color","red");
+                 $newPasswordInput.focus();
+                return false;
+            }
+
+
+            if($newPasswordInput.val() !== $newPasswordConfirmInput.val()){
+                $("#msg_password3").html("<%= language.memberInfomation.password_false%>").css("color", "red");
+                return false;
+            }                    
+
+            // 검증완료시 action으로 넘어감
+               return true;    
+        }); 
+        
+        $('#now_password').blur(function() {
+        var $nowPasswordInput = $('#update_form input[name=now_password]');
+        var passwordValue = $(this).val();        
+
+            if($nowPasswordInput.val()){
+                $.ajax({
+                    url : '/accounts/checkPassword',
+                    type : 'POST',
+                    data :  {now_password : $('#now_password').val()},
+                    //ContentType: "application/json",
+                    success : function(data) {
+                        if(data == false){
+                            $("#msg_password").html("<%= language.memberInfomation.currentPassword_false_Message_2%>").css("color","red");
+                            $('#passwordCheck').val('');
+                            return false;
+                        }else{
+                            $("#msg_password").html("<%= language.memberInfomation.currentPassword_true_Message%>").css("color","blue");
+                            $('#passwordCheck').val('checked');
+                        }
+                    },
+                    error : function(error) {
+                        alert("error");
+                    }
+                });
+            }else{
+                $("#msg_password").html("<%= language.memberInfomation.currentPassword_Alert_Message%>").css("color","red");
+                    $('#passwordCheck').val('');
+                    return false;
+            }
+            
+        });
+    });
+})();
+</script>
+<% include ../footer.ejs %>

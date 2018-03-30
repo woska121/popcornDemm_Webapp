@@ -1,3 +1,28 @@
-    </div>    
+    <!-- </div>     -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 footerlogo">
+                    <img src="/public/img/logo.png"/>
+                </div>
+                <div class="col-md-8 footercontent">
+                    <%= language.footer.copyright%><br/>
+                    <span id="address"></span>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+
+
+<script>
+    $(document).ready(function(){
+        var address = "<%= language.footer.address%>";
+        var str_address = address.replace(/&lt;/g, '<').replace(/&gt;/g, '>'); 
+        $("#address").html(str_address);
+    });
+</script>
 </body>
+
 </html>

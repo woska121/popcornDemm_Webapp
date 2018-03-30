@@ -1,0 +1,199 @@
+<% include ../header.ejs %>
+    <% include ./sidebar.ejs %>
+    <div class="col-sm-10">
+        <table class="table table-bordered table-hover">
+            <h3><p class="text-center">기업 회원 관리</p></h3>
+            <br>
+            <button class="btn btn-primary" data-toggle="modal" data-target="#addModal">기업회원 추가</button> 
+            <br>
+            <br>
+            <tr>
+                <th>번호</th>
+                <th>기업명</th>
+                <th>담당자명</th>
+                <th>부서명</th>
+                <th>직함</th>
+                <th>담당자 전화번호</th>
+                <th>담당자 이메일</th>
+                <th>결제상태</th>
+                <th>상세정보</th>
+            </tr>            
+            <% company.forEach(function(company) {%>
+                <tr>           
+                    <td><%=company.id%></td>
+                    <td><%=company.company_name%></td>
+                    <td><%=company.manager_name%></td>
+                    <td><%=company.manager_department%></td>
+                    <td><%=company.manager_title%></td>
+                    <td><%=company.manager_tel%></td>
+                    <td><%=company.manager_email%></td>
+                    <td></td>
+                    <td><button class="btn btn-info" data-toggle="modal" data-tartget="#detailModal" onclick="showDetailModal('<%=company._id%>');">보기</button></td>
+                </tr>            
+            <%})%>   
+        </table>
+        
+        <div class="paging">
+            <%if(curSet > 1){%> 
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true" onclick="location.href='/admin/companyManage?page=<%=startPage-1%>'"></span>
+            <%}%>            
+            <%for(var i = startPage; i <= endPage; i++){%>
+                <%if(i > totalPage) {%>                  
+                <%} else {%> 
+                <a href="/admin/companyManage?page=<%=i%>"><%=i%></a>
+                <%}%>
+            <%}%>            
+            <%if(curSet < totalSet){%>
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true" onclick="location.href='/admin/companyManage?page=<%=endPage+1%>'"></span>
+            <%}%>  
+        </div>    
+
+        
+        <!-- 기업회원 추가 모달 !-->
+        <div>        
+            <div class="modal fade" id="addModal" role="dialog">
+                <div class="modal-dialog">            
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">기업회원 추가</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form role="form" action="" id="add_form" method="post" >            
+                            <input class="form-control" id="company_name" name="company_name" placeholder="기업명" required>                   
+                            <br>
+                            <input class="form-control" id="manager_name" name="manager_name" placeholder="담당자명" required>
+                            <br>
+                            <input class="form-control" id="manager_department" name="manager_department" placeholder="부서명" required>
+                            <br>
+                            <input class="form-control" id="manager_title" name="manager_title" placeholder="직함" required>
+                            <br>
+                            <input class="form-control" id="manager_tel" name="manager_tel" placeholder="담당자 전화번호" required>
+                            <br>
+                            <input class="form-control" id="manager_email" name="manager_email" placeholder="담당자 이메일" required>
+                            <br>
+                            <textarea class="form-control" id="company_note" name="company_note" placeholder="비고" rows="5" required></textarea><br>                    
+                            <br>
+                            <input type="submit"  class="btn btn-lg btn-success btn-block" value="저장">   
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+                </div>
+            </div>
+        </div>
+        <!-- 기업회원 추가 모달 끝 !-->
+
+
+        <!-- 기업회원 상세보기 모달 !-->
+        <div>        
+            <div class="modal fade" id="detailModal" role="dialog">
+                <div class="modal-dialog modal-lg">            
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">기업회원 상세</h4>
+                    </div>
+                    <div class="modal-body">
+                       <form role="form" action="" id="add_form" method="post" >
+                            <input type="hidden" id="companyId">
+                            <label><b>등록자</b></label>
+                            <input class="form-control" id="add_company_writer" name="add_company_writer" readonly required >
+                            <br>            
+                            <label><b>기업명</b></label>
+                            <input class="form-control" id="company_name" name="company_name" required>                   
+                            <br>
+                            <label><b>담당자명</b></label>
+                            <input class="form-control" id="manager_name" name="manager_name" required>
+                            <br>
+                            <label><b>부서명</b></label>
+                            <input class="form-control" id="manager_department" name="manager_department" required>
+                            <br>
+                            <label><b>직함</b></label>
+                            <input class="form-control" id="manager_title" name="manager_title" required>
+                            <br>
+                            <label><b>담당자 전화번호</b></label>
+                            <input class="form-control" id="manager_tel" name="manager_tel" required>
+                            <br>
+                            <label><b>담당자 이메일</b></label>
+                            <input class="form-control" id="manager_email" name="manager_email" required>
+                            <br>
+                            <label><b>비고</b></label>
+                            <textarea class="form-control" id="company_note" name="company_note" rows="5" required></textarea><br>                    
+                            <br>
+                            <button type="submit"  class="btn btn-success">수정</button> 
+                            <button type="button" class="btn btn-danger" id="deleteBtn">삭제</button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+                </div>
+            </div>
+        </div>
+        <!-- 기업회원 상세보기 모달 끝 !-->  
+
+    </div>
+<script type="text/javascript">
+$(document).ready(function() { 
+    $("#deleteBtn").click(function() {
+        if(confirm('삭제하시겠습니까?')) {
+            $.ajax({
+                url : '/admin/deleteCompany',
+                type : 'POST',
+                data: { companyObjId : $("#companyId").val() },
+            })
+            .done(function(){
+                alert("삭제가 완료되었습니다.");
+                location.href = "/admin/companyManage";
+            })
+            .fail(function(args) {
+                console.log(args);
+            });
+        }
+    });
+});
+
+// 기업회원 상세보기 모달
+function showDetailModal(companyObjId) {
+    $('#detailModal').modal();
+    $('#detailModal').on('shown.bs.modal', function (e) {
+        //$('.modal-dialog #send_to').val(companyObjId); 
+        $.ajax({
+            url : '/admin/detailCompany/'+companyObjId,
+            type : 'POST'
+        })
+        .done(function(args) {
+            var companyId = companyObjId;
+            var add_company_writer = args.company.add_company_writer;
+            var company_name = args.company.company_name;
+            var manager_name = args.company.manager_name;
+            var manager_department = args.company.manager_department;
+            var manager_title = args.company.manager_title;
+            var manager_tel = args.company.manager_tel;
+            var manager_email = args.company.manager_email;
+            var company_note = args.company.company_note;
+
+            $('.modal-dialog #companyId').val(companyId); 
+            $('.modal-dialog #add_company_writer').val(add_company_writer); 
+            $('.modal-dialog #company_name').val(company_name); 
+            $('.modal-dialog #manager_name').val(manager_name); 
+            $('.modal-dialog #manager_department').val(manager_department); 
+            $('.modal-dialog #manager_title').val(manager_title); 
+            $('.modal-dialog #manager_tel').val(manager_tel); 
+            $('.modal-dialog #manager_email').val(manager_email); 
+            $('.modal-dialog #company_note').val(company_note);                        
+        })
+        .fail(function(args) {
+            console.log(args);
+        })
+    });
+}
+
+
+</script>
+
+<% include ../footer.ejs %>

@@ -23,11 +23,11 @@ var CompanyQuoteSchema = new Schema({
         type : String,
         required : [true, '견적 문의 내용을 입력하세요']
     },
-    registered_at : {
+    registered_at : { // 견적 문의 내용 등록일
         type : Date,
         default : Date.now()
     },
-    answer_or_not : {
+    answer_or_not : { // 관리자 답변 메일 여부
         type : Boolean,
         default : false
     }

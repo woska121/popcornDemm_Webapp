@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+
+<body onload="myFunction()" style="margin:0;">
+
+<div id = "loader"></div>
+
+<div style="display:none;" id="myDiv" class="animate-bottom" onclick="location.href='/toolide/workspaceList'">
+</div>
+
+
+<script>
+    var myVar;
+
+    function myFunction() {
+        setInterval(function() {
+            $.ajax({
+                url : '/toolide/waitInstanceCheck/',
+                type : 'GET'
+            })
+            .success(function(args) {                
+                location.href="";
+            })
+
+            .fail(function(args) {
+                console.log(args);
+            });
+
+        }, 80);
+    }
+
+    function showPage() {
+        document.getElementById("loader").style.display = "none";
+        document.getElementById("myDiv").style.display = "block";
+    }
+
+
+</script>
+
+</body>
+</html>
+

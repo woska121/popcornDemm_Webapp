@@ -182,9 +182,6 @@ router.get('/failed', function(req,res){
 
 
 
-
-
-
 // 기업견적문의
 router.get('/quote',function(req,res){
     res.render('price/quote');
@@ -192,14 +189,14 @@ router.get('/quote',function(req,res){
 
 // 기업견적문의 저장
 router.post('/quote', function(req,res){
-    var companyQuote = new CompanyQuoteModel({
+    var CompanyQuote = new CompanyQuoteModel({
       writer : req.body.writer,
       email : req.body.email,
       tel : req.body.tel,
       company_name : req.body.company_name,
       quote_content : req.body.quote_content
     });
-    companyQuote.save(function(err, companyQuote) {
+    CompanyQuote.save(function(err) {
         res.send('<script>alert("견적문의 등록 완료");location.href="/pay/pricelist";</script>');
     });
 });

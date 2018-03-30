@@ -1,0 +1,123 @@
+<% include ../header.ejs %>
+<% include ./sidebar.ejs %>
+<div class="col-sm-10">
+    <table class="table table-bordered table-hover">
+        <h3><p class="text-center">이메일 미인증 회원 조회</p></h3>
+        <br>회원가입 후 메일 인증을 하지 않은 회원 목록입니다.<br>
+            인증 메일 발송 후 24시간 지나면 해당 회원은 자동 삭제됩니다.<br>
+            <br>
+        <!--<button class="btn btn-primary" data-toggle="modal" id="sendEmail" onclick="showModal();">이메일 발송</button> !-->
+
+        <br>
+        <br>
+        <tr>
+            <th><input type="checkbox" id="checkAll"></th>
+            <th>아이디</th>
+            <th>닉네임</th>
+            <th>회원가입일</th>
+        </tr>            
+        <% user.forEach(function(user) { %>                 
+            <tr>           
+                <td><input type="checkbox" name="mcheck" value="<%=user.userid%>"></td>
+                <td><%=user.userid%></td>
+                <td><%=user.displayname%></td>
+                <td> 
+                    <%=user.getDate.year%> -
+                    <%=user.getDate.month%> - 
+                    <%=user.getDate.day%>
+                </td>
+            </tr>            
+        <%})%>
+    </table>
+        
+    <div class="paging">
+        <%if(curSet > 1){%> 
+            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true" onclick="location.href='/admin/emailNotVerificationMember?page=<%=startPage-1%>'"></span>
+        <%}%>            
+        <%for(var i = startPage; i <= endPage; i++){%>
+            <%if(i > totalPage) {%>                  
+            <%} else {%> 
+            <a href="/admin/emailNotVerificationMember?page=<%=i%>"><%=i%></a>
+            <%}%>
+        <%}%>            
+        <%if(curSet < totalSet){%>
+            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true" onclick="location.href='/admin/emailNotVerificationMember?page=<%=endPage+1%>'"></span>
+        <%}%>  
+    </div>    
+    
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">            
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">메일 보내기</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form" action="" id="send_form" method="post" >            
+                <input class="form-control" id="send_to" name="send_to" required>                   
+                <br>
+                <input class="form-control" id="send_title" name="send_title" placeholder="제목을 입력하세요." required>
+                <br>
+                <textarea class="form-control" id="send_content" name="send_content" placeholder="내용을 입력하세요." rows="5" required></textarea><br>                    
+                <br>
+                <input type="submit"  class="btn btn-lg btn-success btn-block" value="전송">   
+                <span id="message"></span>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+        </div>
+    </div>
+</div>
+    
+<script type="text/javascript">    
+$(document).ready(function() {
+    $("#checkAll").click(function() {
+        if ($("#checkAll").prop("checked")) {
+            $("input[name=mcheck]").prop("checked", true);
+        } else {
+            $("input[name=mcheck]").prop("checked", false);
+        }
+    });
+
+    $("#send_form").submit(function(){
+        var from, to, subject, text;
+        var to = $("#send_to").val();
+        var title = $("#send_title").val();
+        var content = $("#send_content").val();
+
+        // 답변 이메일 전송 후 submit
+        $("#message").text("Sending E-mail...Please wait");
+        $.get("/admin/mailToMember",{to:to, title:title, content:content},function(data){
+            if(data=="sent"){
+            $("#message").empty().html("<p>답변이메일이 전송되었습니다!</p>");
+                return true;
+            }
+        });        
+    });
+});
+
+
+function showModal() {    
+    var mcheck = $("input[name=mcheck]");
+    var userEmail = "";
+    for(var i=0; i<mcheck.length; i++){
+        if(mcheck[i].checked == true){
+            userEmail += mcheck[i].value + ",";
+        }
+    }
+    console.log("userEmail===" + userEmail);
+    $("#myModal").modal('show');
+    $("#myModal").on('shown.bs.modal', function (e) {        
+        var userEmail2 = userEmail.slice(0, -1);
+        $(".modal-dialog #send_to").val(userEmail2); 
+    });                    
+}
+
+
+</script>
+
+
+<% include ../footer.ejs %>

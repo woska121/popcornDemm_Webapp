@@ -8,7 +8,8 @@ var CommentsSchema = new Schema({
         type : Date,    //작성날짜의 데이터타입
         default : Date.now() //작성날짜
     },
-    product_id : Number
+    board_id : Number,
+    userid : String
 });
 
 CommentsSchema.plugin( autoIncrement.plugin , { model: "comments", field : "id", startAt : 1 });

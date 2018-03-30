@@ -1,19 +1,16 @@
 <% include ../header.ejs %>
     <% include ./sidebar.ejs %>
-     <div class="col-sm-10">
+    <div class="col-sm-10">
         <table class="table table-bordered table-hover">
-            <h3><p class="text-center">휴면 회원 관리</p></h3>
+            <h3><p class="text-center">탈퇴 회원 관리</p></h3>
             <br>
             <tr>
                 <th>아이디</th>
                 <th>닉네임</th>
                 <th>회원가입일</th>
-                <th>이메일인증여부</th>
-                <th>활성상태</th>
-                <th>사이버머니</th>
-                <th>결제상품</th>
-                <th>결제일</th>
-                <th>남은일수</th>
+                <th>탈퇴일자</th>
+                <th>탈퇴취소처리</th>
+
             </tr>            
                 <% user.forEach(function(user) { %>                 
             <tr>           
@@ -24,20 +21,52 @@
                     <%=user.getDate.month%> - 
                     <%=user.getDate.day%>
                 </td>
-                <% if(user.subscription_status == true) {%>
-                    <td>인증</td>
-                <%} else {%>
-                    <td>미인증</td>
-                <%}%>
-
-                    <td>탈퇴</td>
-
-                <td></td>                        
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>
+                    <%=user.getWithdrawDate.year%> -
+                    <%=user.getWithdrawDate.month%> -
+                    <%=user.getWithdrawDate.day%>  
+                    <%=user.getWithdrawDate.hour%>:
+                    <%=user.getWithdrawDate.minutes%>
+                </td>
+                <td>
+                    <button class="btn btn-primary" onclick="cancelWithdraw('<%=user.userid%>')">탈퇴취소</button>   
+                </td>
             </tr>            
             <%})%>
         </table>
+
+        <div class="paging">
+            <%if(curSet > 1){%> 
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true" onclick="location.href='/admin/withdrawMemberManage?page=<%=startPage-1%>'"></span>
+            <%}%>            
+            <%for(var i = startPage; i <= endPage; i++){%>
+                <%if(i > totalPage) {%>                  
+                <%} else {%> 
+                <a href="/admin/withdrawMemberManage?page=<%=i%>"><%=i%></a>
+                <%}%>
+            <%}%>            
+            <%if(curSet < totalSet){%>
+                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true" onclick="location.href='/admin/withdrawMemberManage?page=<%=endPage+1%>'"></span>
+            <%}%>  
+        </div>   
+    </div>
+
+<script type="text/javascript">
+function cancelWithdraw(userid) {
+    $.ajax({
+        url : '/admin/cancelWithdrawMember/'+userid,
+        type : 'POST'
+    })
+    .success(function(args) {                
+        if(args){
+            alert("탈퇴 취소 완료");
+            document.location.href ='/admin/withdrawMemberManage';
+        }
+    })
+    .fail(function(args) {
+        console.log(args);
+    });
+}
+</script>
 
 <% include ../footer.ejs %>

@@ -1,0 +1,113 @@
+<% include ../header.ejs %>
+    <div class="col-sm-10">
+        <a href="/board/postList" class="btn btn-default">목록으로</a>
+        <a href="/board/posts/edit/<%=board.id%>" class="btn btn-primary">수정</a>
+        <br>
+        <br>
+        <div class="panel panel-default">
+        
+            <div class="panel-heading">
+                제목 : <%=board.board_title%>
+            </div>
+            <div class="panel-body">
+                <div style="padding-bottom: 10px">
+                    작성일 : 
+                        <%=board.getDate.year%> - 
+                        <%=board.getDate.month%> -
+                        <%=board.getDate.day%>
+                </div>
+
+                <% if(board.board_image){%>
+                <p>
+                <img src="/buploads/<%=board.board_image%>" style="max-width: 100%"/>
+                </p>
+                <% } %>
+
+                <%-board.board_content%>
+  
+                
+                <!-- 댓글영역 -->
+                <hr />  
+                <div id = "comment_area">
+                    <% comments.forEach( function(comment) { %>
+                        <div>
+                        <%=comment.content%>
+                        ( <a class='comment_delete' comment_id='<%=comment.id%>'>삭제</a> ) 
+                        </div>
+                    <%});%>
+                </div>
+                <hr />  
+
+                <br><br>
+                <div>
+                    댓글작성하기
+                    <form id="commentForm" action="" method="post">
+                    <input type="hidden" name="board_id" value="<%=board.id%>" />
+                    <textarea class="form-control" name="content"></textarea>
+                    <button class="btn btn-primary" style="margin-top: 10px">댓글작성</button>
+                    </form>
+                </div>
+                <!-- 댓글영역  -->           
+            </div>
+        </div>
+    </div>    
+    <br>
+    
+
+    <script>
+    (function(){
+        $(document).ready(function() {
+            $('#commentForm').submit(function() {
+                var $contentVal = $(this).children('textarea[name=content]').val();
+                if($contentVal){
+                    $.ajax({
+                        url: '/board/posts/ajax_comment/insert',
+                        type: 'POST',
+                        data: $(this).serialize(),
+                    })
+                    // 성공 시
+                    .done(function(args) {
+                        if(args.message === "success"){
+                            $('#comment_area').append(
+                                '<div>' + args.content + '<br>' + args.userid + " ( <a class = 'comment_delete' comment_id='"+args.id+"' >삭제</a> ) </div>"
+                            );
+                            $('#commentForm textarea[name=content]').val("");                        
+                        }
+                        //console.log(args);
+                    })
+                    // 실패 시 
+                    .fail(function(args) {
+                        console.log(args);
+                    });
+                }else{
+                    alert('댓글 내용을 입력해주세요.')
+                }
+                return false;
+            });
+        });
+
+        $(document).on('click' , '.comment_delete' , function(){
+            if(confirm('삭제하시겠습니까?')){ //확인창 예 눌렀을 시만 진행
+                // this 자체는 함수를 가르키므로 객체로 만들어준다
+                var $self = $(this);
+                $.ajax({
+                    url: '/board/posts/ajax_comment/delete',
+                    type: 'POST',
+                    data: { comment_id : $self.attr('comment_id') },
+                })
+                .done(function() {
+                    $self.parent().remove();
+                    alert("삭제가 완료되었습니다.");
+                })
+                .fail(function(args) {
+                    console.log(args);
+                });
+            }
+        });
+    })();
+    </script>
+
+        
+
+
+<% include ../footer.ejs %>

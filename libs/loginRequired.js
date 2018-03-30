@@ -3,7 +3,7 @@
 module.exports = function(req, res, next) {
 
     if (!req.isAuthenticated()) {
-        res.redirect('/accounts/login');
+        res.redirect('/');
     }else{
         // 다음으로 제어권을 넘긴다
         return next();

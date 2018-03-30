@@ -1,0 +1,24 @@
+<% include ../header.ejs %>
+
+    <section id="notFound" class="bg-on navbar-fixed-top">
+    </section>
+
+    <div class="container" id="notFoundPage">
+        <div class="panelWrap">
+            <img src="/public/img/404/404panel.png">
+            <span class="title">404ERROR</span>
+            <div class="content">
+                <span>PAGE NOT FOUND</span>
+                <input type="button" id="redirectHome" value="Go Home!">
+            </div>
+        </div>
+    </div>
+
+<% include ../footer.ejs %>
+<script>
+   $(document).ready(function(){
+        $("#redirectHome").click(function(){
+            document.location.href="/";
+        });
+   });
+</script>

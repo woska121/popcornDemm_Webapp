@@ -1,11 +1,35 @@
-<div class="col-sm-2">
+ <!-- Navigation -->
+
+
+<!-- <div class="row" style="margin-top : -80px;">
     <div class="panel panel-default">
-        <div class="panel-heading">메뉴</div>
+        <div class="panel-heading"><%= language.myPage_sideBar.menu%></div>
         <div class="panel-body">
             <ul>
-                <li><a href="/accounts/update/:id">회원정보수정</a></li>
-                <li><a href="/promotion/mycode">프로모션 코드</a></li>
-            </ul>
+                <li><a href="/accounts/update/:id"><%= language.myPage_sideBar.memberInfomation%></a></li>
+                <!--<li><a href="/promotion/mycode">프로모션 코드</a></li>-->
+             <!--</ul>
+        </div>
+    </div>
+</div> -->
+<div class="mypageNavbar-header">
+    <div class="container wrapper">
+        <div class="header__paragraph">
+            <div class="header__paragraph-1">
+                <span class="header__label-my">MY</span><span class="header__label-ide">PAGE</span>
+            </div>
+            <!-- <div class="header__paragraph-2">
+                <span class="header__divider"></span><span class="header__label-usage">회원정보 수정</span>
+            </div> -->
+        </div>
+        <!-- <img class="header__logo" src="/public/img/logo.png"> -->
+    </div>
+</div>
+
+<div class="mypageNav"> 
+    <div class="container wrapper">
+        <div class="tab__eiditUser active">
+            <%= language.myPage_sideBar.memberInfomation%>
         </div>
     </div>
 </div>

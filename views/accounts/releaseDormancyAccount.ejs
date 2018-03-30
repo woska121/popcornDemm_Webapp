@@ -1,0 +1,80 @@
+<% include ../header.ejs %>
+<div class="row">
+    <div class="col-md-4 col-md-offset-4">
+        <div class="login-panel panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">휴면회원 해제 인증메일 발송</h3>
+            </div>
+            <div class="panel-body">
+                <form role="form" action="" id="resend_form" method="post" >
+                    <fieldset>
+                        <div class="form-group">
+                            <input class="form-control" placeholder="Email" name="userid" id="userid" type="email" autofocus=""  >
+                            <span id="msg_userid"></span>
+                        </div>                             
+                        휴면회원을 해제하시려면 본인의 이메일을 입력한 뒤 메일 전송 버튼을 눌러주세요<br>
+                        <br>
+                        <br>
+                        <input type="button" id="sendDormancyVerification" class="btn btn-lg btn-default btn-block" value="휴면회원 해제 인증메일 전송">
+                        <br>
+                        <span id="message"></span>
+                        <br>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>    
+<script type="text/javascript">
+(function(){   
+    $(document).ready(function() {
+        $('#sendDormancyVerification').click(function(){
+            var $useridInput = $('#resend_form input[name=userid]');
+            var userid = $('#userid').val();
+            var from, to, subject, text;                
+
+            if(!$useridInput.val()){
+                $("#msg_userid").html("이메일을 입력해주세요.").css("color","red");
+                $useridInput.focus();
+                return false;
+            }    
+
+            to = userid;    
+            $("#message").text("Sending E-mail...Please wait");
+            $.get("/accounts/sendDormancyVerification",{to:to},function(data){
+                if(data=="sent"){
+                $("#message").empty().html("<p>사용자의 메일로 메일이 발송되었습니다!<br>메일을 인증하신 후, 로그인을 다시해주세요!</p>");
+                console.log("메일 전송 성공!");
+                }
+            });
+               
+            // 검증완료시 action으로 넘어감
+            return true;
+        });   
+
+        $('#userid').blur(function() {
+            var useridValue = $(this).val();
+            //값이 있을때만 진행
+            if(useridValue){
+                $.ajax({
+                    url: '/accounts/checkDormantAccount/'+ useridValue.trim(), //trim 양쪽 공백이 있을시 제거
+                    type: 'GET',
+                })
+                .done(function(args) {
+                    if(!args.userExist){ // 입력한 이메일이 휴면회원이 아닐 경우
+                        $('#msg_userid').html("휴면회원이 아닌 메일 계정입니다.").css("color", "red");
+                        return false;
+                    } else{
+                        $('#msg_userid').html("메일 전송 버튼을 클릭해주세요.").css("color", "blue");
+                    }
+                })
+                .fail(function(args) {
+                    console.log(args);
+                });
+            }
+        });    
+    });
+})();
+
+</script>
+<% include ../footer.ejs %>

@@ -1,0 +1,76 @@
+<% include ../header.ejs %>
+<div class="row">
+    <div class="col-md-4 col-md-offset-4">
+        <div class="login-panel panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">회원탈퇴</h3>
+            </div>
+            <div class="panel-body">
+                <form role="form" action="" id="withdraw_form" name="withdraw_form" method="post">
+                    <fieldset>
+                        <div class="form-group"> 고객님의 현재 패스워드 입력하셔야 탈퇴가 가능합니다.
+                            <input class="form-control" name="now_password" id="now_password" type="password" value="">
+                            <span id="msg_password"></span><input type="hidden" id="passwordCheck" value="">
+                        </div>                                           
+                        <br>    
+                        <br>  
+                        <input type="submit" id="withdrawButton"  class="btn btn-lg btn-danger btn-block" value="탈퇴하기">                             
+                        <br>                    
+                        <br>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div> 
+</div>    
+
+<script type="text/javascript">
+(function() {
+    $(document).ready(function() {
+        $('#withdraw_form').submit(function(){
+            var $nowPasswordInput = $('#withdraw_form input[name=now_password]');
+
+            if(!$nowPasswordInput.val()){
+                $('#msg_password').html("패스워드를 입력해주세요").css("color", "red");
+                $nowPasswordInput.focus();
+                return false;
+            }
+            if($('#passwordCheck').val()!=='checked'){
+                alert('패스워드를 체크해주세요.');
+                return false;
+            }
+                return true;
+        });
+
+        $('#now_password').blur(function() {
+            var $nowPasswordInput = $('#withdraw_form input[name=now_password]');
+            var passwordValue = $(this).val();
+   
+            if($nowPasswordInput.val()){
+            $.ajax({
+                url : '/accounts/checkPassword',
+                type : 'POST',
+                data :  {now_password : $('#now_password').val()},
+                ContentType: "application/json",
+                success : function(data) {
+                    if(data == false){
+                        $("#msg_password").html("패스워드가 아닙니다.").css("color","red");
+                        $("#passwordCheck").val('');
+                        return false;
+                        
+                    }else{
+                        $("#msg_password").html("패스워드가 맞습니다.").css("color","blue");
+                        $("#passwordCheck").val('checked');
+                    }
+                },
+                error : function(error) {
+                    alert("에러 발생");
+                }
+                });
+            }
+        });
+   });
+})();
+
+</script>
+<% include ../footer.ejs %>
