@@ -1,0 +1,49 @@
+<% include ../header.ejs %>
+
+    <!-- Container (Contact Section) -->
+    <div id="contact" class="container-fluid bg-grey" style="background:#F7F8FA;" >
+        <h2 class="text-center">CONTACT US</h2><br/>
+        <div class="row">
+            <div class="col-sm-5">
+            <h3><p style="color:#8490A6;">We are always happy to hear from you!</p></h3><br/>
+            <h4><p style="color:#447ED5;"><span class="glyphicon glyphicon-map-marker"></span> Gangnam-gu, Seoul, Korea</p></h4>
+            <h4><p style="color:#447ED5;"><span class="glyphicon glyphicon-phone"></span> +82-2-2188-3068</p></h4>
+            <h4><p style="color:#447ED5;"><span class="glyphicon glyphicon-envelope"></span> contact@popcornsar.com</p></h4>
+            </div>
+            <form role="form" action="" id="join_form" method="post" >
+                <div class="col-sm-7 slideanim">
+                <div class="row">
+                    <div class="col-sm-6 form-group">
+                    <input class="form-control" id="writer" name="writer" placeholder="Name" type="text" required>
+                    <span id = "msg_writer"></span>
+                    </div>
+                    <div class="col-sm-6 form-group">
+                    <input class="form-control" id="email" name="email" placeholder="Email" type="email" required>
+                    <span id = "msg_email"></span>
+                    </div>
+                    <div class="col-sm-6 form-group">
+                    <input class="form-control" id="tel" name="tel" placeholder="Tel" type="text" required>
+                    <span id = "msg_tel"></span>
+                    </div>
+                    <div class="col-sm-6 form-group">
+                    <input class="form-control" id="company_name" name="company_name" placeholder="Company Name" type="text" required>
+                    <span id = "msg_company_name"></span>
+                    </div>
+                </div>
+    
+                <textarea class="form-control" id="quote_content" name="quote_content" placeholder="Please enter your content." rows="5" required></textarea><br>
+                <span id = "msg_quote_content"></span>
+                <div class="row" style="text-align:center;">
+                    <div class="col-sm-12 form-group">
+                    <input type="submit"  class="btn btn-primary btn-lg" value="Submit">       
+                    <!-- <button class="btn btn-primary btn-lg" type="submit">Submit</button> !-->
+                    </div>
+                </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
+<% include ../footer.ejs %>

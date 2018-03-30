@@ -1,0 +1,125 @@
+<% include ../header.ejs %>
+
+<div id="pricing" class="container-fluid">
+    <h2>포인트로 결제</h2>
+        <span>01 상품리스트</span>&nbsp;>&nbsp;
+        <span style="color:blue;">02 포인트로 결제&nbsp;>&nbsp;</span>
+        <span> 03 상품구매 완료</span>
+    <hr/><br/>
+
+
+    <!-- 상품구매 table -->
+    <h4><b>상품구매 정보</b></h4>
+    <table class="table table-striped">
+        <thead style="background-color:#eff1f6; color:#666666;">
+        <tr>
+            <th>구매상품 이름</th>
+            <th>Options</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><%=productData.ItemName%></td>
+            <td>
+                <% productData.options.forEach(function oplist(value){ %>
+                   <%=value%> <br/>
+                <% }); %>
+            </td>
+        </tr>
+        </tbody>
+    </table><br/>
+
+    <!-- 현재보유 중인 포인트 table -->
+    <h4><b><%=displayname%>님의 현재보유 중인 포인트</b></h4>
+    <table class="table table-striped" style="text-align:center;">
+        <thead style="background-color:#eff1f6; color:#666666;">
+        <tr>
+            <th style="align=right;">보유 포인트</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><h3 style="color:blue;"><b><%=totalmoney%></b>point</h3></td>
+        </tr>
+        </tbody>
+    </table><br/>
+
+    <!-- 차감 포인트 table -->
+    <h4><b>차감 포인트</b></h4>
+    <table class="table table-striped" style="text-align:center;">
+        <thead style="background-color:#eff1f6; color:#666666;">
+        <tr>
+            <th style="align=right;">차감 포인트</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><h3 style="color:red;"><b>- <%=productData.price%></b>point</h3></td>
+        </tr>
+        </tbody>
+    </table><br/>
+
+    <!--구매 후 포인트 table -->
+    <h4><b>구매 후 포인트</b></h4>
+    <table class="table table-striped" style="text-align:center;">
+        <thead style="background-color:#eff1f6; color:#666666;">
+        <tr>
+            <th style="align=right;">구매 후 포인트</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><h3><b><%=AfterMoney%></b>point</h3></td>
+        </tr>
+        </tbody>
+    </table><br/>
+
+    <!-- 결제동의 checkbox -->
+    <div style="text-align:center;">
+        <label>
+            <input type="checkbox" id="check_agree"/>
+            "결제하고자 하는 상품 정보가 맞습니까?"
+        </label>
+    </div><br/>
+    <div class="row" style="padding:15px; text-align:center; background-color:#ebeef3;">
+        특별한 환불사유/문의가 있을경우 <span style="color:#337ab7">contact@popcornsar.com</span>로 문의해주세요.
+    </div><br/><br/><br/>
+    <div style="text-align:center;">
+        <button style="margin-right:20px;" type="button" class="btn btn-default btn-lg" onclick="location.href='/products/productlist'">취소하기</button>
+        <button class="btn btn-primary btn-lg" type="button" id="completeBt">구매하기</button>
+        <!--<input type="button" class="btn btn-primary btn-lg" id="payresultBt" name="payresultBt" value="전송" />-->
+    </div>
+    <br/><br/>
+</div>
+
+<script>
+    $(document).ready(function(){
+
+        // 구매하기 버튼 클릭시.
+        $('#completeBt').click(function(){
+            // alert('구매하기 버튼 클릭');
+            var check_agree = $("#check_agree").is(":checked");
+            var totalmoney =<%=totalmoney%>;
+            if(check_agree){
+                $.ajax({
+                    url : '/products/complete',
+                    type : 'POST',
+                    data : {
+                        totalmoney : totalmoney
+                    }
+                }).done(function(args){
+                    if(args.message === 'success'){
+                    document.location.href ="/products/success";
+                    }
+                }).fail(function(args){
+                    console.log(args);
+                });
+            }else{
+                alert('동의 후 결제를 해주세요');
+            }
+        });
+
+    });
+</script>
+
+<% include ../footer.ejs %>

@@ -1,0 +1,81 @@
+<% include ../header.ejs %>
+<% include ./sidebar.ejs %>
+
+
+    <div class="container col-sm-10">
+        <div class="form-group row">
+        <h2>프로모션 코드 페이지 입니다.</h2>
+        </br>12자리 프로모션 코드를 입력해 주세요.</br></br>
+            <div class="input-group" id="codediv">
+                <input class="inputs" type="text"  placeholder="코드입력" id="autocomplete" maxlength='4' value='VPR7'/>-
+                <input class="inputs" type="text"  placeholder="코드입력" id="autocomplete" maxlength='4'  value='2C8D'/>-
+                <input class="inputs" type="text"  placeholder="코드입력" id="autocomplete" maxlength='4'  value='RPEE'/>-
+                <input class="inputs" type="text"  placeholder="코드입력" id="autocomplete" maxlength='4'  value='M32F'/>
+            </div>
+
+            </br>
+           
+            <div id="warning">
+                <b><span style="color:red;"></span></b>
+            </div>
+           
+            </br>
+           
+            <div class="input-group-btn">
+                <button class="btn btn-primary" id="approvalsBt" type="text">코드승인</button>
+            </div>
+
+            </br></br><hr></br>
+            <!-- 검색결과 클릭시 LIST Table -->
+            <h2>프로모션 코드 입력결과</h2>  
+            <div id="table" style="with:100%;">
+            </div>
+            
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            
+            // input tag 입력 개수 제한. => 자동 다음 input으로 focus
+            $(".inputs").keyup(function(){
+                var charLimit = $(this).attr("maxlength");
+                var code = $(this).val();
+                if(this.value.length >= charLimit){
+                    $(this).next('.inputs').focus();
+                    return false;
+                }
+            })
+             
+            // 12자리 수가 입력 됬는지 체크 후 DB전송
+            $('#approvalsBt').click(function(){
+                var code_1 = $("#codediv input:nth-child(1)").val();
+                var code_2 = $("#codediv input:nth-child(2)").val();
+                var code_3 = $("#codediv input:nth-child(3)").val();
+                var code_4 = $("#codediv input:nth-child(4)").val();
+                var totalcode = code_1+"-"+code_2+"-"+code_3+"-"+code_4;
+               
+                // 한글 입력방지
+                
+                // 글자수 모자르지 않는지 체크
+                if (totalcode.length < 19){
+                    $("#warning span").html("코드 자리수가 부족합니다. 모든 코드를 입력해주세요.");
+                }else{
+                    $.ajax({
+                        url : '/promotion/usemycode_Ajax',
+                        type : 'POST',
+                        data : {promotioncode : totalcode}
+                    }).done(function(args){
+                        alert(args.message);
+                    });
+                }
+            });
+
+
+        });
+        
+    </script>
+
+
+
+<% include ../footer.ejs %>

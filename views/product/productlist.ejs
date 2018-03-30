@@ -1,0 +1,160 @@
+<% include ../header.ejs %>
+
+<div id="pricing" class="container-fluid">
+  <h2>상품 결제</h2>
+      <span style="color:blue;">01 상품리스트</span>&nbsp;>&nbsp;
+      <span>02 포인트로 결제&nbsp;>&nbsp;</span>
+      <span>03 상품구매 완료</span>
+      
+  <hr/><br/>
+
+  <div class="text-center">
+    <h2>상품 리스트</h2>
+    <h4> </h4>
+  </div>
+  <div class="row slideanim">
+    <div class="col-sm-4 col-xs-12">
+      <div class="panel panel-default text-center" id="basicdiv">
+        <div class="panel-heading">
+          <h1>Basic</h1>
+        </div>
+        <div class="panel-body">
+          <p><strong>1</strong> Basic 제안</p>
+          <p><strong>2</strong> Basic 제안</p>
+          <p><strong>3</strong> Basic 제안</p>
+          <p><strong>4</strong> Basic 제안</p>
+          <p><strong>5</strong> Basic 제안</p>
+        </div>
+        <div class="panel-footer" id="basicmoney">
+          <h3>1000</h3> Point <br/><br/>
+          <!-- <a class="btn btn-primary" href="/pay/payresult?price=2000">구매하기</a> -->
+          <a class="btn btn-primary" id="BasicBt">구매하기</a>
+        </div>
+      </div>      
+    </div>     
+    <div class="col-sm-4 col-xs-12">
+      <div class="panel panel-default text-center" id="Prodiv" style="border: 3px solid orange">
+        <div class="panel-heading">
+          <h1>Pro</h1>
+        </div>
+        <div class="panel-body">
+          <p><strong>1</strong> Pro 제안</p>
+          <p><strong>2</strong> Pro 제안</p>
+          <p><strong>3</strong> Pro 제안</p>
+          <p><strong>4</strong> Pro 제안</p>
+          <p><strong>5</strong> Pro 제안</p>
+        </div>
+        <div class="panel-footer" id="promoney">
+          <h3>3000</h3>Point <br/><br/>
+          <a class="btn btn-primary" id="ProBt">구매하기</a>
+        </div>
+      </div>      
+    </div>       
+    <div class="col-sm-4 col-xs-12">
+      <div class="panel panel-default text-center" id="Premiumdiv">
+        <div class="panel-heading">
+          <h1>Premium</h1>
+        </div>
+        <div class="panel-body">
+          <p><strong>1</strong> Premium 제안</p>
+          <p><strong>2</strong> Premium 제안</p>
+          <p><strong>3</strong> Premium 제안</p>
+          <p><strong>4</strong> Premium 제안</p>
+          <p><strong>5</strong> Premium 제안</p>
+        </div>
+        <div class="panel-footer" id="premiummoney">
+          <h3>6000</h3> Point <br/><br/>
+          <a class="btn btn-primary" id="PremiumBt">구매하기</a>
+        </div>
+      </div>      
+    </div>   
+  </div>
+
+  
+<script>
+
+    $(document).ready(function(){
+
+        // Basic 구매하기 버튼 클릭
+        $('#BasicBt').click(function(){
+          var options = [$("#basicdiv p:nth-child(1)").text(),$("#basicdiv p:nth-child(2)").text(),
+           $("#basicdiv p:nth-child(3)").text(),$("#basicdiv p:nth-child(4)").text(),
+           $("#basicdiv p:nth-child(5)").text()];
+
+          var price= $("#basicmoney h3").text();
+          var ItemName = $("#basicdiv h1").text();
+
+            $.ajax({
+                url:'/products/products_ajax',
+                type:'POST',
+                data: {
+                    price: price,
+                    ItemName : ItemName,
+                    options: options
+                }
+            }).done(function(args){
+              if(args.message==='success'){
+                  document.location.href = "/products/payview";
+              }
+            }).fail(function(args) {
+                console.log(args);
+            });
+        });
+
+        // Pro 구매하기 버튼 클릭
+        $('#ProBt').click(function(){
+          var options = [$("#Prodiv p:nth-child(1)").text(),$("#Prodiv p:nth-child(2)").text(),
+           $("#Prodiv p:nth-child(3)").text(),$("#Prodiv p:nth-child(4)").text(),
+           $("#Prodiv p:nth-child(5)").text()];
+
+          var price= $("#promoney h3").text();
+          var ItemName = $("#Prodiv h1").text();
+
+            $.ajax({
+                url:'/products/products_ajax',
+                type:'POST',
+                data: {
+                    price: price,
+                    ItemName : ItemName,
+                    options: options
+                }
+            }).done(function(args){
+              if(args.message==='success'){
+                  document.location.href = "/products/payview";
+              }
+            }).fail(function(args) {
+                console.log(args);
+            });
+        });
+
+        // Premium 구매하기 버튼 클릭
+         $('#PremiumBt').click(function(){
+          var options = [$("#Premiumdiv p:nth-child(1)").text(),$("#Premiumdiv p:nth-child(2)").text(),
+           $("#Premiumdiv p:nth-child(3)").text(),$("#Premiumdiv p:nth-child(4)").text(),
+           $("#Premiumdiv p:nth-child(5)").text()];
+
+          var price= $("#premiummoney h3").text();
+          var ItemName = $("#Premiumdiv h1").text();
+          
+           $.ajax({
+                url:'/products/products_ajax',
+                type:'POST',
+                data: {
+                    price: price,
+                    ItemName : ItemName,
+                    options: options
+                }
+            }).done(function(args){
+              if(args.message==='success'){
+                  document.location.href = "/products/payview";
+              }
+            }).fail(function(args) {
+                console.log(args);
+            });
+        });
+
+    }); //이벤트 틀
+
+    
+</script>
+<% include ../footer.ejs %>

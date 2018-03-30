@@ -1,0 +1,67 @@
+<% include ../header.ejs %>
+<div class="row">
+    <div class="col-md-4 col-md-offset-4">
+        <div class="login-panel panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">이메일 인증 재전송</h3>
+            </div>
+            <div class="panel-body">
+                <form role="form" action="" id="resend_form" method="post" >
+                    <fieldset>
+                        <div class="form-group">
+                            <input class="form-control" placeholder="Email" name="userid" id="userid" type="email" autofocus=""  >
+                            <span id="msg_userid"></span>
+                            <input type="hidden" id="hidden_userid" value="<%=userid%>">
+                        </div>                             
+                        이메일이 인증되지 않았습니다.<br>
+                        재전송을 원하시면 회원가입 시 입력하셨던 이메일을 다시 적어주세요.<br>
+                        회원가입 시의 이메일과 같지 않으면 재전송이 불가합니다.<br><br>
+                        <b>회원가입으로부터 7일이 지난 후까지 이메일 인증을 안하시면 해당 이메일 아이디는 사용이 불가합니다.</b>
+                        <br>
+                        <br>
+                        <input type="button" id="resend" class="btn btn-lg btn-default btn-block" value="인증 이메일 재전송">
+                        <span id="message"></span>
+                        <br>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>    
+<script type="text/javascript">
+(function(){   
+    $(document).ready(function() {
+        $('#resend').click(function(){
+            var $useridInput = $('#resend_form input[name=userid]');
+            var hidden_userid = $('#hidden_userid').val(); // 로그인 시 입력한 이메일 session 값
+            var userid = $('#userid').val();
+            var from, to, subject, text;                
+
+            if(!$useridInput.val()){
+                $("#msg_userid").html("이메일을 입력해주세요.").css("color","red");
+                $useridInput.focus();
+                return false;
+            }    
+
+            if(hidden_userid == userid){
+                to = userid;    
+                $("#message").text("Sending E-mail...Please wait");
+		        $.get("http://localhost:3000/accounts/send",{to:to},function(data){
+                    if(data=="sent"){
+                    $("#message").empty().html("<p>사용자의 메일로 메일이 재발송되었습니다!<br>메일을 인증하신 후, 로그인을 다시해주세요!</p>");
+                    console.log("인증 메일 전송 성공!");
+                    }
+		        });
+            }else{
+                $("#msg_userid").html("로그인 시 입력하신 이메일이 아닙니다.").css("color","red");
+                $useridInput.focus();
+                return false;
+            }            
+            // 검증완료시 action으로 넘어감
+            return true;
+        });                  
+    });
+})();
+
+</script>
+<% include ../footer.ejs %>
